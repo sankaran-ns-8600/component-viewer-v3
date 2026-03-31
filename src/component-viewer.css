@@ -1,0 +1,1933 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ComponentViewer – Stylesheet (plain CSS)
+   If you @import this into a Less build, use (inline) so Less does not
+   process it:  @import (inline) "component-viewer.css";
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── overlay ─────────────────────────────────────────────────────────── */
+/* Isolate from host: consistent box model; load this CSS after your app base so our rules win. */
+.cv-overlay,
+.cv-overlay *,
+.cv-overlay *::before,
+.cv-overlay *::after {
+  box-sizing: border-box;
+}
+
+/* Video/audio player: prevent host purple in all contexts (overlay or inline e.g. attachments list) */
+.cv-video-wrap button,
+.cv-audio-wrap button {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+.cv-video-wrap:focus,
+.cv-video-wrap:focus-visible,
+.cv-audio-wrap:focus,
+.cv-audio-wrap:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.cv-video-wrap button:focus,
+.cv-video-wrap button:active,
+.cv-video-wrap button:focus-visible,
+.cv-video-wrap .cv-jp-big-play:focus,
+.cv-video-wrap .cv-jp-big-play:active,
+.cv-video-wrap .cv-jp-big-play:focus-visible,
+.cv-audio-wrap button:focus,
+.cv-audio-wrap button:active,
+.cv-audio-wrap button:focus-visible,
+.cv-audio-wrap .cv-jp-big-play:focus,
+.cv-audio-wrap .cv-jp-big-play:active,
+.cv-audio-wrap .cv-jp-big-play:focus-visible,
+.cv-video-wrap .cv-jp-btn:focus,
+.cv-video-wrap .cv-jp-btn:active,
+.cv-video-wrap .cv-jp-btn:focus-visible,
+.cv-audio-wrap .cv-jp-btn:focus,
+.cv-audio-wrap .cv-jp-btn:active,
+.cv-audio-wrap .cv-jp-btn:focus-visible,
+.cv-video-wrap .jp-play:focus,
+.cv-video-wrap .jp-play:active,
+.cv-video-wrap .jp-play:focus-visible,
+.cv-video-wrap .jp-pause:focus,
+.cv-video-wrap .jp-pause:active,
+.cv-video-wrap .jp-pause:focus-visible,
+.cv-audio-wrap .jp-play:focus,
+.cv-audio-wrap .jp-play:active,
+.cv-audio-wrap .jp-play:focus-visible,
+.cv-audio-wrap .jp-pause:focus,
+.cv-audio-wrap .jp-pause:active,
+.cv-audio-wrap .jp-pause:focus-visible,
+.cv-video-wrap .jp-mute:focus,
+.cv-video-wrap .jp-mute:active,
+.cv-video-wrap .jp-mute:focus-visible,
+.cv-video-wrap .jp-unmute:focus,
+.cv-video-wrap .jp-unmute:active,
+.cv-video-wrap .jp-unmute:focus-visible,
+.cv-audio-wrap .jp-mute:focus,
+.cv-audio-wrap .jp-mute:active,
+.cv-audio-wrap .jp-mute:focus-visible,
+.cv-audio-wrap .jp-unmute:focus,
+.cv-audio-wrap .jp-unmute:active,
+.cv-audio-wrap .jp-unmute:focus-visible,
+.cv-video-wrap .jp-full-screen:focus,
+.cv-video-wrap .jp-full-screen:active,
+.cv-video-wrap .jp-full-screen:focus-visible,
+.cv-video-wrap .jp-restore-screen:focus,
+.cv-video-wrap .jp-restore-screen:active,
+.cv-video-wrap .jp-restore-screen:focus-visible,
+.cv-video-wrap .cv-jp-hd:focus,
+.cv-video-wrap .cv-jp-hd:active,
+.cv-video-wrap .cv-jp-hd:focus-visible,
+.cv-audio-wrap select.cv-jp-speed:focus,
+.cv-audio-wrap select.cv-jp-speed:active,
+.cv-audio-wrap select.cv-jp-speed:focus-visible,
+.cv-video-wrap select.cv-jp-speed:focus,
+.cv-video-wrap select.cv-jp-speed:active,
+.cv-video-wrap select.cv-jp-speed:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  background-color: rgba(255,255,255,.08) !important;
+  background-image: none !important;
+  color: inherit !important;
+}
+
+/* Prevent host project focus/active/focus-visible styles (e.g. purple) from affecting overlay buttons */
+.cv-overlay button:focus,
+.cv-overlay button:active,
+.cv-overlay button:focus-visible,
+.cv-overlay [role="button"]:focus,
+.cv-overlay [role="button"]:active,
+.cv-overlay [role="button"]:focus-visible,
+.cv-overlay .cv-tb-btn:focus,
+.cv-overlay .cv-tb-btn:active,
+.cv-overlay .cv-tb-btn:focus-visible,
+.cv-overlay .cv-jp-btn:focus,
+.cv-overlay .cv-jp-btn:active,
+.cv-overlay .cv-jp-btn:focus-visible,
+.cv-overlay .cv-close:focus,
+.cv-overlay .cv-close:active,
+.cv-overlay .cv-close:focus-visible,
+.cv-overlay .cv-nav:focus,
+.cv-overlay .cv-nav:active,
+.cv-overlay .cv-nav:focus-visible,
+.cv-overlay .cv-theme-toggle:focus,
+.cv-overlay .cv-theme-toggle:active,
+.cv-overlay .cv-theme-toggle:focus-visible,
+.cv-overlay .cv-fullscreen-toggle:focus,
+.cv-overlay .cv-fullscreen-toggle:active,
+.cv-overlay .cv-fullscreen-toggle:focus-visible,
+.cv-overlay .cv-comment-toggle:focus,
+.cv-overlay .cv-comment-toggle:active,
+.cv-overlay .cv-comment-toggle:focus-visible,
+.cv-overlay .cv-carousel-toggle:focus,
+.cv-overlay .cv-carousel-toggle:active,
+.cv-overlay .cv-carousel-toggle:focus-visible,
+.cv-overlay .cv-carousel-nav:focus,
+.cv-overlay .cv-carousel-nav:active,
+.cv-overlay .cv-carousel-nav:focus-visible,
+.cv-overlay .cv-comment-prev:focus,
+.cv-overlay .cv-comment-prev:active,
+.cv-overlay .cv-comment-prev:focus-visible,
+.cv-overlay .cv-comment-next:focus,
+.cv-overlay .cv-comment-next:active,
+.cv-overlay .cv-comment-next:focus-visible,
+.cv-overlay .cv-jp-big-play:focus,
+.cv-overlay .cv-jp-big-play:active,
+.cv-overlay .cv-jp-big-play:focus-visible,
+.cv-overlay .jp-play:focus,
+.cv-overlay .jp-play:active,
+.cv-overlay .jp-play:focus-visible,
+.cv-overlay .jp-pause:focus,
+.cv-overlay .jp-pause:active,
+.cv-overlay .jp-pause:focus-visible,
+.cv-overlay .jp-mute:focus,
+.cv-overlay .jp-mute:active,
+.cv-overlay .jp-mute:focus-visible,
+.cv-overlay .jp-unmute:focus,
+.cv-overlay .jp-unmute:active,
+.cv-overlay .jp-unmute:focus-visible,
+.cv-overlay .jp-full-screen:focus,
+.cv-overlay .jp-full-screen:active,
+.cv-overlay .jp-full-screen:focus-visible,
+.cv-overlay .cv-jp-hd:focus,
+.cv-overlay .cv-jp-hd:active,
+.cv-overlay .cv-jp-hd:focus-visible,
+.cv-overlay .cv-video-wrap button:focus,
+.cv-overlay .cv-video-wrap button:active,
+.cv-overlay .cv-video-wrap button:focus-visible,
+.cv-overlay .cv-audio-wrap button:focus,
+.cv-overlay .cv-audio-wrap button:active,
+.cv-overlay .cv-audio-wrap button:focus-visible,
+.cv-overlay .cv-audio-wrap .cv-jp-big-play:focus,
+.cv-overlay .cv-audio-wrap .cv-jp-big-play:active,
+.cv-overlay .cv-audio-wrap .cv-jp-big-play:focus-visible,
+.cv-overlay [class*="cv-jp"]:focus,
+.cv-overlay [class*="cv-jp"]:active,
+.cv-overlay [class*="cv-jp"]:focus-visible,
+.cv-overlay select:focus,
+.cv-overlay select:active,
+.cv-overlay select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+  background-color: transparent !important;
+  color: inherit !important;
+}
+/* Re-apply intended background for header/close/nav and video/audio buttons so host purple does not show */
+.cv-overlay .cv-close:focus,
+.cv-overlay .cv-close:active,
+.cv-overlay .cv-close:focus-visible,
+.cv-overlay .cv-theme-toggle:focus,
+.cv-overlay .cv-theme-toggle:active,
+.cv-overlay .cv-theme-toggle:focus-visible,
+.cv-overlay .cv-fullscreen-toggle:focus,
+.cv-overlay .cv-fullscreen-toggle:active,
+.cv-overlay .cv-fullscreen-toggle:focus-visible,
+.cv-overlay .cv-comment-toggle:focus,
+.cv-overlay .cv-comment-toggle:active,
+.cv-overlay .cv-comment-toggle:focus-visible,
+.cv-overlay .cv-carousel-toggle:focus,
+.cv-overlay .cv-carousel-toggle:active,
+.cv-overlay .cv-carousel-toggle:focus-visible,
+.cv-overlay .cv-nav:focus,
+.cv-overlay .cv-nav:active,
+.cv-overlay .cv-nav:focus-visible,
+.cv-overlay .cv-carousel-nav:focus,
+.cv-overlay .cv-carousel-nav:active,
+.cv-overlay .cv-carousel-nav:focus-visible,
+.cv-overlay .cv-comment-prev:focus,
+.cv-overlay .cv-comment-prev:active,
+.cv-overlay .cv-comment-prev:focus-visible,
+.cv-overlay .cv-comment-next:focus,
+.cv-overlay .cv-comment-next:active,
+.cv-overlay .cv-comment-next:focus-visible,
+.cv-overlay .cv-video-wrap button:focus,
+.cv-overlay .cv-video-wrap button:active,
+.cv-overlay .cv-video-wrap button:focus-visible,
+.cv-overlay .cv-video-wrap .cv-jp-big-play:focus,
+.cv-overlay .cv-video-wrap .cv-jp-big-play:active,
+.cv-overlay .cv-video-wrap .cv-jp-big-play:focus-visible,
+.cv-overlay .cv-audio-wrap button:focus,
+.cv-overlay .cv-audio-wrap button:active,
+.cv-overlay .cv-audio-wrap button:focus-visible,
+.cv-overlay .cv-audio-wrap .cv-jp-big-play:focus,
+.cv-overlay .cv-audio-wrap .cv-jp-big-play:active,
+.cv-overlay .cv-audio-wrap .cv-jp-big-play:focus-visible,
+.cv-overlay .cv-jp-btn:focus,
+.cv-overlay .cv-jp-btn:active,
+.cv-overlay .cv-jp-btn:focus-visible,
+.cv-overlay .jp-play:focus,
+.cv-overlay .jp-play:active,
+.cv-overlay .jp-play:focus-visible,
+.cv-overlay .jp-pause:focus,
+.cv-overlay .jp-pause:active,
+.cv-overlay .jp-pause:focus-visible,
+.cv-overlay .jp-mute:focus,
+.cv-overlay .jp-mute:active,
+.cv-overlay .jp-mute:focus-visible,
+.cv-overlay .jp-unmute:focus,
+.cv-overlay .jp-unmute:active,
+.cv-overlay .jp-unmute:focus-visible,
+.cv-overlay .jp-full-screen:focus,
+.cv-overlay .jp-full-screen:active,
+.cv-overlay .jp-full-screen:focus-visible,
+.cv-overlay .jp-restore-screen:focus,
+.cv-overlay .jp-restore-screen:active,
+.cv-overlay .jp-restore-screen:focus-visible,
+.cv-overlay .cv-jp-hd:focus,
+.cv-overlay .cv-jp-hd:active,
+.cv-overlay .cv-jp-hd:focus-visible {
+  background-color: rgba(255,255,255,.08) !important;
+  background-image: none !important;
+}
+/* Prev/next chevrons: slightly grey (host .cv-overlay button:focus uses color: inherit !important) */
+.cv-overlay .cv-nav:focus,
+.cv-overlay .cv-nav:active,
+.cv-overlay .cv-nav:focus-visible,
+.cv-overlay .cv-carousel-nav:focus,
+.cv-overlay .cv-carousel-nav:active,
+.cv-overlay .cv-carousel-nav:focus-visible {
+  color: #aeb6c4 !important;
+}
+.cv-overlay .cv-shell.cv-stage-light-bg .cv-nav:focus,
+.cv-overlay .cv-shell.cv-stage-light-bg .cv-nav:active,
+.cv-overlay .cv-shell.cv-stage-light-bg .cv-nav:focus-visible,
+.cv-overlay .cv-shell.cv-stage-light-bg .cv-carousel-nav:focus,
+.cv-overlay .cv-shell.cv-stage-light-bg .cv-carousel-nav:active,
+.cv-overlay .cv-shell.cv-stage-light-bg .cv-carousel-nav:focus-visible {
+  color: #d8dce3 !important;
+}
+.cv-overlay.cv-theme-light .cv-nav:focus,
+.cv-overlay.cv-theme-light .cv-nav:active,
+.cv-overlay.cv-theme-light .cv-nav:focus-visible,
+.cv-overlay.cv-theme-light .cv-carousel-nav:focus,
+.cv-overlay.cv-theme-light .cv-carousel-nav:active,
+.cv-overlay.cv-theme-light .cv-carousel-nav:focus-visible {
+  color: #333 !important;
+}
+.cv-overlay {
+  position: fixed; inset: 0;
+  z-index: 2147483647; /* above host UI (e.g. Connect chatbar/panels) so overlay and footer are never hidden */
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.94);
+  opacity: 0; visibility: hidden;
+  transition: opacity .3s ease-out, visibility .3s ease-out;
+}
+.cv-overlay.cv-visible { opacity: 1; visibility: visible; }
+.cv-overlay.cv-closing {
+  opacity: 0;
+  transition: opacity .28s ease-in, visibility .28s ease-in;
+}
+
+.cv-backdrop {
+  position: absolute; inset: 0; z-index: 0;
+  cursor: default;
+}
+.cv-shell {
+  position: relative; z-index: 1;
+  transform: translateZ(0);  /* own stacking context so shell is always above backdrop */
+  display: flex; flex-direction: column;
+  width: 100vw; height: 100vh; max-width: none;
+  pointer-events: auto;
+  background: rgba(14,14,14,.98);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px; user-select: none;
+  opacity: 0;
+  transform: translateZ(0) scale(0.98);
+  transition: opacity .3s ease-out, transform .3s ease-out;
+}
+.cv-overlay.cv-visible .cv-shell {
+  opacity: 1;
+  transform: translateZ(0) scale(1);
+}
+.cv-overlay.cv-closing .cv-shell {
+  opacity: 0;
+  transform: translateZ(0) scale(0.97);
+  transition: opacity .28s ease-in, transform .28s ease-in;
+}
+
+/* ── header ──────────────────────────────────────────────────────────── */
+.cv-header {
+  display: flex; align-items: center;
+  padding: 12px 18px; flex-shrink: 0; gap: 12px;
+}
+.cv-header-left   { flex-shrink: 0; }
+.cv-header-center { flex: 1; min-width: 0; }
+.cv-header-right  { flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+.cv-counter { font-size: 13px; opacity: .6; min-width: 48px; }
+.cv-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.cv-theme-toggle,
+.cv-fullscreen-toggle,
+.cv-comment-toggle,
+.cv-minimize-toggle {
+  background: rgba(255,255,255,.14); border: none; color: #e0e0e0;
+  width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+  flex-shrink: 0; aspect-ratio: 1; border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s; padding: 0;
+}
+.cv-theme-toggle:hover,
+.cv-fullscreen-toggle:hover,
+.cv-comment-toggle:hover,
+.cv-minimize-toggle:hover { background: rgba(255,255,255,.2); }
+.cv-theme-toggle:focus-visible,
+.cv-fullscreen-toggle:focus-visible,
+.cv-comment-toggle:focus-visible,
+.cv-minimize-toggle:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+.cv-theme-toggle svg,
+.cv-fullscreen-toggle svg,
+.cv-comment-toggle svg,
+.cv-minimize-toggle svg { width: 18px; height: 18px; display: block; }
+.cv-comment-toggle.cv-active,
+.cv-comment-toggle[aria-expanded="true"] { background: rgba(66,133,244,.4); color: rgba(255,255,255,.95); }
+.cv-comment-toggle.cv-active:hover,
+.cv-comment-toggle[aria-expanded="true"]:hover { background: rgba(66,133,244,.5); }
+.cv-close {
+  background: rgba(255,255,255,.14); border: none; color: #e0e0e0;
+  font-size: 24px; width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+  flex-shrink: 0; aspect-ratio: 1; line-height: 1; border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.cv-close:hover { background: rgba(255,255,255,.2); }
+.cv-close:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+
+/* Minimize: keep overlay alive while letting page interactions continue */
+.cv-overlay.cv-minimized {
+  background: transparent;
+  pointer-events: none;
+}
+.cv-overlay.cv-minimized .cv-backdrop,
+.cv-overlay.cv-minimized .cv-shell {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.cv-restore-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2147483647;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(17,17,17,.92);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.cv-restore-fab:hover { background: rgba(40,40,40,.96); }
+.cv-restore-fab:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+.cv-theme-light .cv-restore-fab {
+  background: #1a73e8;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: 0 6px 18px rgba(26,115,232,.45);
+}
+.cv-theme-light .cv-restore-fab:hover { background: #1765cc; }
+
+/* ── tooltip (hover, not title attribute) ──────────────────────────────── */
+.cv-tooltip {
+  position: fixed;
+  z-index: 2147483647; /* above overlay so tooltip is visible when overlay is open */
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #fff;
+  background: rgba(0,0,0,.85);
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .15s ease-out, visibility .15s ease-out;
+}
+.cv-tooltip.cv-tooltip-visible {
+  opacity: 1;
+  visibility: visible;
+}
+/* When overlay is in fullscreen, tooltip is moved into it; ensure it appears above overlay content */
+.cv-overlay .cv-tooltip {
+  z-index: 2147483647;
+}
+/* When video is in fullscreen, tooltip is moved into the video wrapper; ensure it appears above video controls */
+.cv-video-wrap .cv-tooltip {
+  z-index: 2147483647;
+}
+
+/* ── shortcuts popup ─────────────────────────────────────────────────── */
+.cv-shortcuts-popup {
+  position: absolute; inset: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; visibility: hidden; opacity: 0;
+  transition: opacity .2s ease-out, visibility .2s ease-out;
+}
+.cv-shortcuts-popup.cv-open {
+  pointer-events: auto; visibility: visible; opacity: 1;
+  background: rgba(0,0,0,.55);
+}
+.cv-shortcuts-popup-inner {
+  pointer-events: auto;
+  background: rgba(30,30,30,.97);
+  color: #e0e0e0;
+  padding: 16px 20px;
+  border-radius: 10px;
+  max-width: 320px; max-height: 80vh;
+  overflow: auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,.4);
+}
+.cv-theme-light .cv-shortcuts-popup-inner {
+  background: rgba(250,250,250,.98);
+  color: #333;
+  box-shadow: 0 4px 24px rgba(0,0,0,.15);
+}
+.cv-shortcuts-popup-title {
+  font-size: 14px; font-weight: 600;
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+}
+.cv-theme-light .cv-shortcuts-popup-title {
+  border-bottom-color: rgba(0,0,0,.12);
+}
+.cv-shortcuts-list {
+  list-style: none; margin: 0; padding: 0;
+}
+.cv-shortcuts-list li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0; font-size: 13px;
+}
+.cv-shortcuts-list kbd {
+  flex-shrink: 0;
+  min-width: 28px;
+  padding: 2px 6px;
+  font-size: 12px; font-family: inherit;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 4px;
+  text-align: center;
+}
+.cv-theme-light .cv-shortcuts-list kbd {
+  background: rgba(0,0,0,.08);
+  border-color: rgba(0,0,0,.2);
+}
+.cv-shortcuts-popup-close {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #e0e0e0;
+  background: rgba(255,255,255,.12);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cv-shortcuts-popup-close:hover {
+  background: rgba(255,255,255,.2);
+}
+.cv-theme-light .cv-shortcuts-popup-close {
+  color: #333;
+  background: rgba(0,0,0,.08);
+}
+.cv-theme-light .cv-shortcuts-popup-close:hover {
+  background: rgba(0,0,0,.12);
+}
+
+/* ── body ────────────────────────────────────────────────────────────── */
+.cv-body { flex: 1; display: flex; align-items: center; position: relative; min-height: 0; }
+.cv-body.cv-body-pdf { align-items: stretch; }
+.cv-body.cv-body-pdf .cv-stage-wrap { min-height: 0; }
+.cv-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  padding: 0; border: none; border-radius: 50%;
+  background: rgba(255,255,255,.22);
+  color: #aeb6c4;
+  width: 44px; height: 44px;
+  min-width: 44px; min-height: 44px;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.cv-nav:hover { background: rgba(255,255,255,.22); transform: translateY(-50%) scale(1.05); }
+.cv-nav:active { transform: translateY(-50%) scale(0.98); }
+.cv-nav:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+.cv-nav .cv-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+  text-align: center;
+}
+.cv-nav svg { width: 16px; height: 16px; display: block; }
+.cv-nav-prev { left: 18px; }
+.cv-nav-next { right: 18px; }
+
+/* Inline/markdown: stage has white bg — make nav arrows visible in dark mode */
+.cv-shell.cv-stage-light-bg .cv-nav {
+  background: rgba(0,0,0,.6) !important;
+  color: #d8dce3 !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+.cv-shell.cv-stage-light-bg .cv-nav:hover,
+.cv-shell.cv-stage-light-bg .cv-nav:focus,
+.cv-shell.cv-stage-light-bg .cv-nav:active,
+.cv-shell.cv-stage-light-bg .cv-nav:focus-visible {
+  background: rgba(0,0,0,.6) !important;
+  color: #d8dce3 !important;
+}
+.cv-shell.cv-stage-light-bg .cv-nav svg {
+  stroke: #d8dce3;
+}
+
+/* stage-only mode: hide header, carousel strip, and footer; only stage + prev/next nav */
+.cv-shell.cv-stage-only .cv-header,
+.cv-shell.cv-stage-only .cv-carousel-wrap,
+.cv-shell.cv-stage-only .cv-footer {
+  display: none;
+}
+/* when stageOnly + slideshow enabled, show footer with only slideshow control */
+.cv-shell.cv-stage-only.cv-slideshow-visible .cv-footer {
+  display: flex;
+}
+
+/* ── stage ───────────────────────────────────────────────────────────── */
+.cv-stage-wrap {
+  flex: 1; height: 100%; min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.cv-stage-wrap.cv-stage-wrap-pdf {
+  align-items: stretch;
+}
+.cv-stage-wrap.cv-stage-wrap-pdf .cv-stage {
+  min-height: 0;
+}
+/* Comment overlay: small box on attachment, semi-transparent; size constrained to not cover full width */
+.cv-comment-wrap {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  left: auto;
+  max-width: min(320px, 85%);
+  max-height: min(140px, 35vh);
+  overflow-y: auto;
+  padding: 10px 12px 12px;
+  background: rgba(0,0,0,.4);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  z-index: 3;
+  border-radius: 8px;
+}
+.cv-comment-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.cv-comment-prev,
+.cv-comment-next {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.cv-comment-prev:hover,
+.cv-comment-next:hover {
+  background: rgba(255,255,255,.28);
+}
+.cv-comment-prev:focus-visible,
+.cv-comment-next:focus-visible {
+  outline: 2px solid rgba(255,255,255,.9);
+  outline-offset: 1px;
+}
+.cv-comment-prev svg,
+.cv-comment-next svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+.cv-comment-counter {
+  font-size: 11px;
+  color: rgba(255,255,255,.8);
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+.cv-comment-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cv-comment-author {
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cv-comment-sep {
+  border-bottom: 1px dotted rgba(255,255,255,.35);
+  margin: 6px 0 8px;
+}
+.cv-comment-inner {
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: rgba(255,255,255,.95);
+}
+
+.cv-stage-wrap.cv-stage-out .cv-stage {
+  opacity: 0;
+  transition: opacity .26s ease-in;
+}
+.cv-stage {
+  position: relative;
+  z-index: 0; /* below .cv-loader (z-index: 20) so loading spinner is visible */
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .26s ease-out;
+}
+.cv-stage.cv-stage-pdf {
+  align-items: stretch;
+}
+.cv-stage.cv-stage-pdf > * {
+  min-height: 0;
+}
+.cv-stage.cv-stage-in > * {
+  opacity: 0;
+  transition: opacity .28s ease-out;
+}
+.cv-stage.cv-stage-in.cv-stage-in-visible > * {
+  opacity: 1;
+}
+
+/* ── loader ──────────────────────────────────────────────────────────── */
+.cv-loader {
+  position: absolute; inset: 0;
+  display: none; align-items: center; justify-content: center;
+  z-index: 20; /* above stage content so spinner is visible during image load */
+  background: rgba(0,0,0,.25); /* subtle backdrop so spinner is visible */
+  pointer-events: none;
+}
+.cv-loader.cv-active { display: flex; }
+.cv-spinner {
+  width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+  flex-shrink: 0;
+  border: 3px solid rgba(255,255,255,.15); border-top-color: rgba(255,255,255,.8);
+  border-radius: 50%;
+  animation: cv-spin .7s linear infinite;
+}
+@keyframes cv-spin { to { transform: rotate(360deg); } }
+
+/* ── carousel toggle (header button) ──────────────────────────────────── */
+.cv-carousel-toggle {
+  background: rgba(255,255,255,.14); border: none; color: #e0e0e0;
+  width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+  flex-shrink: 0; aspect-ratio: 1; border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s; padding: 0;
+}
+.cv-carousel-toggle:hover { background: rgba(255,255,255,.2); }
+.cv-carousel-toggle:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+.cv-carousel-toggle.cv-active,
+.cv-carousel-toggle[aria-expanded="true"] { background: rgba(66,133,244,.4); color: rgba(255,255,255,.95); }
+.cv-carousel-toggle.cv-active:hover,
+.cv-carousel-toggle[aria-expanded="true"]:hover { background: rgba(66,133,244,.5); }
+.cv-carousel-toggle svg { width: 16px; height: 16px; display: block; }
+
+/* ── carousel (strip of thumbnails) ────────────────────────────────────── */
+.cv-carousel-wrap {
+  flex-shrink: 0;
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: transparent;
+}
+.cv-carousel-wrap.cv-open {
+  display: flex;
+}
+.cv-carousel-inner {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+.cv-carousel-nav {
+  flex-shrink: 0;
+  width: 28px; height: 48px; min-width: 28px; min-height: 48px;
+  margin: 0 4px;
+  padding: 0; border: none; border-radius: 6px;
+  background: rgba(255,255,255,.22);
+  color: #aeb6c4;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.cv-carousel-nav:hover {
+  background: rgba(255,255,255,.22);
+  transform: scale(1.05);
+}
+.cv-carousel-nav:active { transform: scale(0.98); }
+.cv-carousel-nav:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+.cv-carousel-nav svg { width: 14px; height: 14px; display: block; }
+.cv-carousel {
+  width: 100%;
+  min-width: 0;
+  display: flex; align-items: center; justify-content: flex-start; gap: 10px;
+  overflow-x: auto; overflow-y: hidden;
+  padding: 10px 12px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  background: transparent;
+}
+/* Slim scrollbars: carousel (horizontal) and all overlay scroll areas */
+.cv-carousel::-webkit-scrollbar { height: 6px; }
+.cv-carousel::-webkit-scrollbar-track { background: rgba(255,255,255,.06); border-radius: 3px; }
+.cv-carousel::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 3px; }
+.cv-carousel::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.35); }
+
+.cv-shortcuts-popup-inner,
+.cv-pdf-sidebar,
+.cv-pdf-main,
+.cv-comment-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.06);
+}
+.cv-shortcuts-popup-inner::-webkit-scrollbar,
+.cv-pdf-sidebar::-webkit-scrollbar,
+.cv-pdf-main::-webkit-scrollbar,
+.cv-comment-wrap::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.cv-shortcuts-popup-inner::-webkit-scrollbar-track,
+.cv-pdf-sidebar::-webkit-scrollbar-track,
+.cv-pdf-main::-webkit-scrollbar-track,
+.cv-comment-wrap::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.06);
+  border-radius: 3px;
+}
+.cv-shortcuts-popup-inner::-webkit-scrollbar-thumb,
+.cv-pdf-sidebar::-webkit-scrollbar-thumb,
+.cv-pdf-main::-webkit-scrollbar-thumb,
+.cv-comment-wrap::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.22);
+  border-radius: 3px;
+}
+.cv-shortcuts-popup-inner::-webkit-scrollbar-thumb:hover,
+.cv-pdf-sidebar::-webkit-scrollbar-thumb:hover,
+.cv-pdf-main::-webkit-scrollbar-thumb:hover,
+.cv-comment-wrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,.35);
+}
+
+/* Inline and markdown have light content background — use dark thumb */
+.cv-inline-wrap,
+.cv-markdown-body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.22) rgba(0,0,0,.06);
+}
+.cv-inline-wrap::-webkit-scrollbar,
+.cv-markdown-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.cv-inline-wrap::-webkit-scrollbar-track,
+.cv-markdown-body::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.06);
+  border-radius: 3px;
+}
+.cv-inline-wrap::-webkit-scrollbar-thumb,
+.cv-markdown-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.22);
+  border-radius: 3px;
+}
+.cv-inline-wrap::-webkit-scrollbar-thumb:hover,
+.cv-markdown-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,.35);
+}
+
+.cv-carousel-item {
+  position: relative;
+  flex-shrink: 0;
+  width: 104px; height: 72px;
+  padding: 0; border: 2px solid transparent;
+  border-radius: 8px;
+  background: rgba(255,255,255,.08);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+}
+.cv-carousel-item:hover {
+  background: rgba(255,255,255,.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+.cv-carousel-item.cv-active {
+  border-color: rgba(66,133,244,.95);
+  background: rgba(66,133,244,.25);
+  box-shadow: 0 0 0 1px rgba(66,133,244,.4), 0 2px 8px rgba(0,0,0,.3);
+}
+.cv-carousel-thumb {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.cv-carousel-play-icon {
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.4);
+  color: rgba(255,255,255,.95);
+  pointer-events: none;
+}
+.cv-carousel-play-icon svg { width: 26px; height: 26px; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+.cv-carousel-no-thumb {
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,.75);
+  text-align: center; line-height: 1.2;
+}
+.cv-carousel-item .cv-carousel-filename {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 2px 4px;
+  font-size: 9px; font-weight: 600;
+  line-height: 1.2;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0,0,0,.75));
+  text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── footer ──────────────────────────────────────────────────────────── */
+.cv-footer {
+  flex-shrink: 0; padding: 10px 18px;
+  display: flex; flex-direction: column; align-items: stretch; gap: 0;
+}
+.cv-footer-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.cv-poll-option {
+  display: none;
+  padding: 12px 14px; margin: 0 -4px 10px -4px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.cv-poll-option.cv-active { display: flex; }
+.cv-poll-option-inner { display: flex; align-items: center; width: 100%; }
+.cv-poll-option-label-wrap {
+  display: inline-flex; align-items: center; gap: 12px;
+  cursor: pointer; font-size: 15px; font-weight: 600;
+  color: rgba(255,255,255,.95);
+  user-select: none;
+  padding: 2px 0;
+}
+.cv-poll-option-label-wrap input[type="radio"],
+.cv-poll-option-label-wrap input[type="checkbox"] {
+  margin: 0; cursor: pointer; flex-shrink: 0;
+  width: 18px; height: 18px;
+  accent-color: rgba(66,133,244,.9);
+}
+.cv-poll-option-label-wrap input[type="radio"]:focus-visible,
+.cv-poll-option-label-wrap input[type="checkbox"]:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+.cv-poll-option-label {
+  letter-spacing: 0.02em;
+}
+.cv-poll-option-updated {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(129, 199, 132, 0.95);
+  flex-shrink: 0;
+  white-space: nowrap;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s;
+}
+.cv-poll-option-updated.cv-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0s 0.2s;
+}
+.cv-toolbar {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.06); padding: 4px 6px; border-radius: 8px;
+  flex-wrap: wrap;
+}
+.cv-toolbar:empty { display: none; }
+
+/* Harden toolbar buttons so host styles cannot stretch icons (same approach as header/top buttons) */
+.cv-tb-btn {
+  background: rgba(255,255,255,.08); border: none; color: #e0e0e0;
+  cursor: pointer; border-radius: 6px;
+  padding: 6px 10px; font-size: 13px;
+  min-width: 32px; min-height: 32px;
+  flex-shrink: 0;
+  align-self: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; transition: background .15s;
+}
+.cv-tb-btn:hover { background: rgba(255,255,255,.2); }
+/* Force same button box for all toolbar buttons (custom e.g. .cv-tb-edit-image); host .ci-pencil etc. must not strip background */
+.cv-overlay .cv-toolbar .cv-tb-btn {
+  background: rgba(255,255,255,.14) !important;
+  border: none !important; border-radius: 6px !important;
+  padding: 6px 10px !important; min-width: 32px !important; min-height: 32px !important;
+  display: inline-flex !important; align-items: center !important; justify-content: center !important;
+}
+.cv-overlay .cv-toolbar .cv-tb-btn:hover { background: rgba(255,255,255,.26) !important; }
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn {
+  background: rgba(0,0,0,.06) !important; color: #444 !important;
+}
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn:hover { background: rgba(0,0,0,.12) !important; }
+.cv-tb-btn:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 2px; }
+/* Scoped under .cv-overlay so active state wins over host project button styles */
+.cv-overlay .cv-toolbar .cv-tb-btn.cv-active { background: rgba(66,133,244,.5) !important; color: rgba(255,255,255,.95) !important; }
+.cv-overlay .cv-toolbar .cv-tb-btn.cv-active:hover { background: rgba(66,133,244,.6) !important; color: rgba(255,255,255,.95) !important; }
+.cv-tb-btn.cv-active { background: rgba(66,133,244,.5); }
+.cv-tb-btn svg {
+  width: 18px; height: 18px;
+  display: block; vertical-align: middle; flex-shrink: 0;
+}
+.cv-tb-btn i   { font-size: 16px; line-height: 1; }
+/* Class-based toolbar icons (e.g. icon font .ci-pencil): plugin adds .cv-tb-icon; color on element and ::before overrides host .ci-pencil:before */
+.cv-overlay .cv-toolbar .cv-tb-btn .cv-tb-icon,
+.cv-overlay .cv-toolbar .cv-tb-btn .cv-tb-icon::before,
+.cv-overlay .cv-toolbar .cv-tb-btn i.cv-tb-icon.ci-pencil,
+.cv-overlay .cv-toolbar .cv-tb-btn i.cv-tb-icon.ci-pencil::before { color: rgba(255,255,255,.95) !important; opacity: 1 !important; }
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn .cv-tb-icon,
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn .cv-tb-icon::before,
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn i.cv-tb-icon.ci-pencil,
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn i.cv-tb-icon.ci-pencil::before { color: #444 !important; opacity: 1 !important; }
+.cv-tb-label   { font-size: 13px; }
+.cv-tb-sep { width: 1px; height: 20px; min-height: 20px; flex-shrink: 0; background: rgba(255,255,255,.15); margin: 0 4px; }
+/* Inline Copy and Markdown View source: match download button size and alignment */
+.cv-tb-copy svg,
+.cv-tb-markdown-toggle svg { width: 16px; height: 16px; }
+.cv-slideshow-btn { padding: 4px 8px; font-size: 11px; }
+.cv-slideshow-btn .cv-tb-label { font-size: 11px; }
+
+/* slideshow progress indicator */
+.cv-slideshow-progress-wrap {
+  display: none;
+  height: 3px;
+  width: 100%;
+  background: rgba(255,255,255,.12);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.cv-slideshow-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: rgba(255,255,255,.5);
+  border-radius: 2px;
+}
+
+/* ── zoom widget ─────────────────────────────────────────────────────── */
+.cv-zoom-widget {
+  display: flex; align-items: center; gap: 6px;
+  flex-shrink: 0;
+}
+.cv-zoom-widget .cv-tb-btn {
+  padding: 4px 6px;
+  min-width: 32px; min-height: 32px;
+  flex-shrink: 0;
+}
+.cv-zoom-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 130px; min-width: 80px; height: 4px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.2); border-radius: 2px; outline: none; cursor: pointer;
+}
+.cv-zoom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; cursor: pointer; box-shadow: 0 0 3px rgba(0,0,0,.4);
+}
+.cv-zoom-slider::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; cursor: pointer; border: none;
+}
+.cv-zoom-slider:focus-visible { outline: 2px solid rgba(255,255,255,.8); outline-offset: 2px; }
+.cv-zoom-pct { font-size: 12px; opacity: .6; min-width: 36px; text-align: center; cursor: pointer; }
+.cv-zoom-pct:hover { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   IMAGE (includes GIF – same renderer; animation preserved by browser)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-img-wrap {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+}
+.cv-img-transform {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.cv-img-transform > .cv-image {
+  position: relative;
+  left: auto;
+  top: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity .25s ease;
+  transform: none;
+}
+.cv-img-transform > .cv-image.cv-loaded { opacity: 1; }
+.cv-extract-overlay.cv-extract-overlay--stacked {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  margin: 0;
+}
+.cv-img-wrap > .cv-image {
+  position: absolute;
+  left: 50%; top: 50%;
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  opacity: 0; transition: opacity .25s ease;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  backface-visibility: hidden;
+  display: block;
+}
+.cv-img-wrap > .cv-image.cv-loaded { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   VIDEO (jPlayer skin)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-video-wrap {
+  width: 100%; height: 100%; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: #000; border-radius: 4px; overflow: hidden;
+}
+/* beforeVideoPlay gate: same contract as beforeOpen ([data-cv-gate-proceed]); jPlayer path only */
+.cv-video-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.82);
+  color: #e8e8e8;
+  text-align: center;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.cv-theme-light .cv-video-gate {
+  background: rgba(255, 255, 255, 0.94);
+  color: #222;
+}
+.cv-jp-player { width: 100%; height: 100%; }
+.cv-overlay .cv-jp-player img, .cv-overlay .cv-jp-player video { width: 100%; height: 100%; object-fit: contain; }
+.cv-native-video { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+.cv-jp-video-ui { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.cv-jp-video-screen { flex: 1; cursor: pointer; position: relative; z-index: 1; }
+
+/* poster image shown before jPlayer is initialized; hidden once playback is ready */
+.cv-jp-poster {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  background-color: #000;
+}
+.cv-jp-poster.cv-hidden { visibility: hidden; pointer-events: none; }
+
+/* big center play button — grey circle, white play icon, medium size */
+.cv-jp-big-play {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 48px;
+  width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 2;
+  pointer-events: auto;
+  color: #fff;
+}
+.cv-jp-big-play svg {
+  display: block;
+  width: 56px; height: 56px; min-width: 56px; min-height: 56px;
+  flex-shrink: 0;
+  background: rgba(90,90,90,.92);
+  border-radius: 50%;
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  transition: transform .2s ease, opacity .2s, background .2s;
+}
+.cv-jp-big-play:hover svg {
+  transform: scale(1.06);
+  background: rgba(110,110,110,.95);
+}
+.cv-jp-big-play.cv-hidden { pointer-events: none; }
+.cv-jp-big-play.cv-hidden svg { opacity: 0; transform: scale(0.85); }
+
+/* shortcut feedback overlay (video only; small icon at top-right when Space/M used) */
+.cv-jp-state-feedback {
+  position: absolute; top: 0; right: 0;
+  padding: 16px 16px 0 0;
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  pointer-events: none; z-index: 2;
+}
+.cv-jp-state-feedback svg {
+  width: 40px; height: 40px; min-width: 40px; min-height: 40px;
+  padding: 10px; flex-shrink: 0;
+  background: rgba(0,0,0,.6); border-radius: 50%;
+  color: #fff;
+  animation: cv-jp-state-feedback-in .25s ease-out;
+}
+.cv-jp-state-feedback.cv-jp-state-feedback-out svg {
+  animation: cv-jp-state-feedback-out .3s ease-in forwards;
+}
+@keyframes cv-jp-state-feedback-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes cv-jp-state-feedback-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.85); }
+}
+
+/* strip message (e.g. "Copied to clipboard") */
+.cv-strip-message {
+  position: absolute; left: 50%; bottom: 72px;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(0,0,0,.8);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 12;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.cv-strip-message.cv-strip-visible { opacity: 1; }
+.cv-theme-light .cv-strip-message { background: rgba(0,0,0,.75); color: #fff; }
+
+.cv-jp-controls {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.88));
+  flex-wrap: nowrap;
+  min-height: 40px;
+}
+.cv-jp-controls > * {
+  flex-shrink: 0;
+}
+.cv-jp-controls > .cv-jp-progress {
+  flex-shrink: 1;
+  min-width: 60px;
+}
+.cv-jp-btn {
+  background: rgba(255,255,255,.14); border: none; color: #fff;
+  border-radius: 6px;
+  cursor: pointer; padding: 4px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: .95; transition: opacity .15s, background .15s;
+  min-width: 32px; min-height: 32px;
+  flex-shrink: 0; align-self: center;
+}
+.cv-jp-btn:hover { opacity: 1; background: rgba(255,255,255,.24); }
+.cv-jp-btn svg {
+  width: 18px; height: 18px;
+  display: block; flex-shrink: 0;
+}
+.cv-jp-btn-lg svg { width: 28px; height: 28px; }
+.cv-jp-hd { font-size: 11px; font-weight: 700; min-width: 28px; letter-spacing: .02em; }
+.cv-jp-hd.cv-jp-hd-active {
+  background: rgba(66, 133, 244, 0.9);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.6);
+}
+.cv-jp-hd.cv-jp-hd-active::after { content: ' \2713'; font-size: 10px; opacity: .95; }
+.cv-jp-hd-badge {
+  display: none;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  background: rgba(66, 133, 244, 0.92);
+  color: #fff;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+.cv-jp-time { font-size: 12px; color: rgba(255,255,255,.7); white-space: nowrap; min-width: 36px; flex-shrink: 0; }
+
+.cv-jp-progress {
+  flex: 1; height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,.2); position: relative; cursor: pointer;
+}
+.cv-jp-play-bar {
+  height: 100%; background: #4285f4; border-radius: 2px;
+  position: absolute; top: 0; left: 0;
+}
+
+.cv-jp-speed {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+  color: #fff; border-radius: 4px;
+  padding: 2px 6px; font-size: 12px;
+  cursor: pointer; outline: none;
+  min-width: 48px; max-width: 56px; width: 52px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  height: 28px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.cv-jp-speed option { background: #222; color: #fff; }
+
+.cv-jp-volume {
+  width: 60px; min-width: 60px; max-width: 60px; height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,.2); position: relative; cursor: pointer;
+  flex-shrink: 0;
+}
+.cv-jp-volume-val {
+  height: 100%; background: #fff; border-radius: 2px;
+  position: absolute; top: 0; left: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   AUDIO (jPlayer skin)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-audio-wrap {
+  position: relative;
+  width: 100%; max-width: 480px; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 28px; margin: 0 auto;
+}
+.cv-audio-artwork {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 14px; text-align: center;
+}
+.cv-audio-icon {
+  width: 110px; height: 110px; min-width: 110px; min-height: 110px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.06); border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cv-audio-icon svg {
+  width: 48px; height: 48px;
+  display: block; flex-shrink: 0;
+}
+.cv-audio-title { font-size: 17px; font-weight: 600; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cv-audio-meta { display: flex; gap: 10px; font-size: 13px; opacity: .45; }
+
+.cv-jp-audio-ui { width: 100%; }
+.cv-jp-audio-ui .cv-jp-controls {
+  background: rgba(255,255,255,.04); border-radius: 10px; padding: 12px 16px;
+}
+.cv-jp-audio-ui .cv-jp-progress { background: rgba(255,255,255,.12); }
+.cv-jp-audio-ui .cv-jp-play-bar { background: #34a853; }
+.cv-audio-native-controls {
+  width: 100%; max-width: 400px;
+}
+.cv-audio-native-controls audio {
+  width: 100%; height: 40px; outline: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PDF (pdf.js)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-pdf-wrap { width: 100%; height: 100%; min-height: 0; display: flex; overflow: hidden; }
+.cv-pdf-iframe-wrap {
+  width: 100%; height: 100%; display: flex; overflow: hidden;
+}
+.cv-pdf-iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HTML type (item.src URL → full-stage iframe)
+   .cv-stage-iframe: hook for styling the main embed (similar role to
+   Colorbox .cboxIframe — use this name, not cboxIframe).
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-html-iframe-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.cv-html-iframe.cv-stage-iframe,
+.cv-html-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+/* In-stage loading: same .cv-spinner as overlay loader; panel mirrors inline .cv-inline-loading placement. */
+.cv-html-iframe-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+/* Hide iframe visually while loader pane is shown */
+.cv-html-iframe-wrap.cv-html-iframe-loading .cv-html-iframe {
+  visibility: hidden;
+}
+
+.cv-pdf-sidebar {
+  width: 160px; flex-shrink: 0; background: rgba(0,0,0,.3);
+  overflow-y: auto; padding: 8px;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+.cv-pdf-thumbs { display: flex; flex-direction: column; gap: 8px; }
+.cv-pdf-thumb {
+  cursor: pointer; border-radius: 4px;
+  border: 2px solid transparent; overflow: hidden; position: relative;
+  transition: border-color .15s;
+}
+.cv-pdf-thumb:hover { border-color: rgba(255,255,255,.3); }
+.cv-pdf-thumb.cv-active { border-color: #4285f4; }
+.cv-pdf-thumb canvas { width: 100%; display: block; }
+.cv-pdf-thumb-num {
+  position: absolute; bottom: 2px; right: 4px;
+  font-size: 10px; color: rgba(255,255,255,.6);
+  background: rgba(0,0,0,.5); padding: 1px 4px; border-radius: 3px;
+}
+.cv-pdf-main {
+  flex: 1; min-height: 0;
+  overflow-x: auto; overflow-y: auto;
+  display: block; padding: 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.06);
+}
+/* Slim scrollbars for PDF scroll (vertical + horizontal) */
+.cv-pdf-main::-webkit-scrollbar { width: 6px; height: 6px; }
+.cv-pdf-main::-webkit-scrollbar-track { background: rgba(255,255,255,.06); border-radius: 3px; }
+.cv-pdf-main::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 3px; }
+.cv-pdf-main::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.35); }
+.cv-pdf-main-inner {
+  width: max-content; margin: 0 auto; min-height: 100%;
+}
+.cv-pdf-canvas-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 16px; min-height: 100%; padding: 8px 0;
+}
+.cv-pdf-spread {
+  display: flex; flex-direction: row; align-items: flex-start; justify-content: center;
+  gap: 12px; flex-shrink: 0;
+}
+.cv-pdf-canvas { box-shadow: 0 2px 12px rgba(0,0,0,.4); border-radius: 2px; max-width: 100%; }
+.cv-pdf-page-info {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; opacity: .7; padding: 0 6px; white-space: nowrap; min-width: 50px; text-align: center; cursor: pointer;
+  gap: 2px;
+}
+.cv-pdf-page-info .cv-pdf-page-current { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+.cv-pdf-page-input {
+  width: 2.2em; min-width: 24px; max-width: 48px; height: 22px; line-height: 1;
+  font-size: 12px; text-align: center; padding: 2px 4px; vertical-align: middle;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 4px; color: inherit; box-sizing: border-box;
+}
+.cv-pdf-page-input:focus { outline: 2px solid rgba(66,133,244,.8); outline-offset: 1px; border-color: transparent; }
+.cv-pdf-zoom-select {
+  height: 28px; min-height: 28px; padding: 2px 24px 2px 8px;
+  font-size: 12px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 6px; color: inherit; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='%23e0e0e0'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 6px center;
+}
+.cv-pdf-zoom-select:focus { outline: 2px solid rgba(66,133,244,.8); outline-offset: 1px; }
+.cv-theme-light .cv-pdf-page-input { background: rgba(0,0,0,.06); border-color: rgba(0,0,0,.15); color: #333; }
+.cv-theme-light .cv-pdf-zoom-select { background: rgba(0,0,0,.06); border-color: rgba(0,0,0,.15); color: #444; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='%23555'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E"); }
+
+.cv-pdf-page { position: relative; }
+.cv-pdf-text-layer {
+  position: absolute; left: 0; top: 0; overflow: hidden;
+  pointer-events: auto; user-select: text; -webkit-user-select: text;
+  cursor: text;
+  border-left: 3px solid rgba(66, 133, 244, 0.5);
+  box-sizing: border-box;
+}
+.cv-pdf-text-layer span {
+  position: absolute; white-space: pre; line-height: 1.15;
+  color: #000;
+  background: rgba(255, 235, 100, 0.75);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 200, 50, 0.2);
+}
+.cv-pdf-text-layer span::selection {
+  background: rgba(66, 133, 244, 0.4);
+}
+.cv-theme-light .cv-pdf-text-layer span {
+  color: #000;
+  background: rgba(255, 235, 100, 0.8);
+  box-shadow: 0 0 0 1px rgba(255, 200, 50, 0.25);
+}
+.cv-theme-light .cv-pdf-text-layer span::selection {
+  background: rgba(66, 133, 244, 0.3);
+}
+.cv-pdf-annotations { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.cv-pdf-annot { pointer-events: auto; }
+.cv-pdf-annot-link { display: block; width: 100%; height: 100%; cursor: pointer; }
+.cv-pdf-annot-link:hover { background: rgba(66,133,244,.12); }
+.cv-pdf-annot-highlight { background: rgba(255,213,0,.25); mix-blend-mode: multiply; }
+.cv-pdf-annot[style] { cursor: default; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INLINE (source code: js, jsp, java, etc.)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-inline-wrap {
+  width: 100%; height: 100%;
+  overflow: auto;
+  background: #fff;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 16px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.cv-inline-body {
+  min-width: 100%; max-width: 100%;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-size: 13px; line-height: 1.5;
+  color: #24292f;
+  text-align: left;
+}
+.cv-inline-loading {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 120px;
+}
+.cv-inline-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(0,0,0,.1);
+  border-top-color: rgba(0,0,0,.45);
+  border-radius: 50%;
+  animation: cv-spin .7s linear infinite;
+}
+.cv-inline-line {
+  display: flex;
+  white-space: pre;
+  min-height: 1.5em;
+}
+.cv-inline-num {
+  flex-shrink: 0;
+  width: 3.5em; padding-right: 12px;
+  text-align: right; user-select: none;
+  color: #8c8c8c; border-right: 1px solid #e6e8eb;
+  margin-right: 12px;
+}
+.cv-inline-code {
+  flex: 1;
+  white-space: pre;
+  overflow: visible;
+  word-break: normal;
+  font-weight: 600;
+}
+/* Highlight.js: token spans inside .cv-inline-code keep layout (host loads a theme CSS) */
+.cv-inline-body .cv-inline-code [class*="hljs-"] {
+  display: inline;
+  font: inherit;
+}
+
+/* ── markdown (rendered as HTML) ─────────────────────────────────────── */
+.cv-markdown-body {
+  width: 100%; height: 100%;
+  overflow: auto;
+  background: #fff;
+  color: #24292f;
+  font-size: 14px; line-height: 1.6;
+  padding: 20px 24px;
+  text-align: left;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.cv-markdown-body h1 { font-size: 1.5em; margin: 0 0 0.5em; }
+.cv-markdown-body h2 { font-size: 1.25em; margin: 1em 0 0.4em; }
+.cv-markdown-body h3 { font-size: 1.1em; margin: 0.8em 0 0.3em; }
+.cv-markdown-body p { margin: 0 0 0.75em; }
+.cv-markdown-body code { background: rgba(0,0,0,.06); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+.cv-markdown-body a { color: #0969da; text-decoration: none; }
+.cv-markdown-body a:hover { text-decoration: underline; }
+
+/* ── rtl mode (isRTL: true) ─────────────────────────────────────────── */
+.cv-overlay.cv-rtl .cv-nav-prev { right: 18px; left: auto; }
+.cv-overlay.cv-rtl .cv-nav-next { left: 18px; right: auto; }
+.cv-overlay.cv-rtl .cv-comment-wrap { left: 16px; right: auto; }
+.cv-overlay.cv-rtl .cv-restore-fab { left: 18px; right: auto; }
+.cv-overlay.cv-rtl .cv-carousel { direction: rtl; }
+.cv-overlay.cv-rtl .cv-carousel-prev { order: 3; }
+.cv-overlay.cv-rtl .cv-carousel { order: 2; }
+.cv-overlay.cv-rtl .cv-carousel-next { order: 1; }
+.cv-overlay.cv-rtl .cv-nav svg,
+.cv-overlay.cv-rtl .cv-carousel-nav svg,
+.cv-overlay.cv-rtl .cv-comment-prev svg,
+.cv-overlay.cv-rtl .cv-comment-next svg { transform: scaleX(-1); }
+.cv-overlay.cv-rtl .cv-poll-option-updated { margin-left: 0; margin-right: 10px; }
+.cv-overlay.cv-rtl .cv-pdf-sidebar { border-right: none; border-left: 1px solid rgba(255,255,255,.08); }
+.cv-overlay.cv-rtl .cv-pdf-thumb-num { left: 4px; right: auto; }
+.cv-overlay.cv-rtl .cv-pdf-zoom-select { padding: 2px 8px 2px 24px; background-position: left 6px center; }
+.cv-overlay.cv-rtl .cv-markdown-body { direction: rtl; text-align: right; }
+.cv-theme-light.cv-rtl .cv-pdf-sidebar { border-left-color: rgba(0,0,0,.08); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   UNSUPPORTED / ERROR
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-unsupported {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px; text-align: center; padding: 40px 24px;
+}
+.cv-unsupported-icon { opacity: .25; }
+.cv-unsupported-ext { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: rgba(255,255,255,.5); background: rgba(255,255,255,.08); padding: 3px 12px; border-radius: 4px; }
+.cv-unsupported-name { font-size: 17px; font-weight: 600; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cv-unsupported-size { font-size: 13px; opacity: .45; }
+.cv-unsupported-msg  { font-size: 14px; opacity: .4; margin: 0; }
+.cv-unsupported-dl {
+  background: rgba(66,133,244,.2); border: none; color: #8ab4f8; cursor: pointer;
+  padding: 9px 22px; border-radius: 8px; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px; transition: background .15s;
+}
+.cv-unsupported-dl:hover { background: rgba(66,133,244,.35); }
+.cv-unsupported-dl svg { width: 16px; height: 16px; }
+
+/*
+ * Built-in error / unsupported: center on stage for all viewer types.
+ * .cv-stage-pdf uses row flex + align-items:stretch — siblings (e.g. .cv-pdf-wrap + .cv-error-card)
+ * would otherwise push the message sideways; absolute centering is stable everywhere.
+ */
+.cv-stage > .cv-error-card,
+.cv-stage > .cv-unsupported {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15; /* above stage content; below .cv-loader (20) */
+  max-width: min(480px, calc(100% - 32px));
+  width: fit-content;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+/* Stage fade-in hides direct children — keep error/unsupported visible when they are the only UI */
+.cv-stage.cv-stage-in > .cv-error-card,
+.cv-stage.cv-stage-in > .cv-unsupported {
+  opacity: 1;
+}
+.cv-error-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: rgba(255,255,255,.45); }
+.cv-error-card svg { opacity: .35; }
+.cv-error-text { font-size: 15px; margin: 0; }
+.cv-error-dl {
+  background: rgba(255,255,255,.1); border: none; color: #ccc;
+  padding: 8px 18px; border-radius: 6px; font-size: 13px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; transition: background .15s;
+}
+.cv-error-dl:hover { background: rgba(255,255,255,.2); }
+.cv-error-dl svg { width: 14px; height: 14px; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THEME: LIGHT
+   ═══════════════════════════════════════════════════════════════════════ */
+/* shell */
+.cv-theme-light { background: rgba(245,245,245,.95); }
+.cv-theme-light .cv-shell {
+  color: #333;
+  background: rgba(255,255,255,.99);
+  box-shadow: 0 8px 48px rgba(0,0,0,.18);
+}
+.cv-theme-light .cv-theme-toggle { background: rgba(0,0,0,.06); color: #333; }
+.cv-theme-light .cv-theme-toggle:hover { background: rgba(0,0,0,.12); }
+.cv-theme-light .cv-theme-toggle:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-carousel-toggle { background: rgba(0,0,0,.06); color: #333; }
+.cv-theme-light .cv-carousel-toggle:hover { background: rgba(0,0,0,.12); }
+.cv-theme-light .cv-carousel-toggle:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-carousel-toggle.cv-active,
+.cv-theme-light .cv-carousel-toggle[aria-expanded="true"] { background: rgba(66,133,244,.25); color: #1a73e8; }
+.cv-theme-light .cv-carousel-toggle.cv-active:hover,
+.cv-theme-light .cv-carousel-toggle[aria-expanded="true"]:hover { background: rgba(66,133,244,.35); }
+.cv-theme-light .cv-carousel-toggle svg { stroke: #444; }
+.cv-theme-light .cv-fullscreen-toggle { background: rgba(0,0,0,.06); color: #333; }
+.cv-theme-light .cv-fullscreen-toggle:hover { background: rgba(0,0,0,.12); }
+.cv-theme-light .cv-fullscreen-toggle:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-fullscreen-toggle svg { stroke: #444; }
+.cv-theme-light .cv-comment-toggle { background: rgba(0,0,0,.06); color: #333; }
+.cv-theme-light .cv-comment-toggle:hover { background: rgba(0,0,0,.12); }
+.cv-theme-light .cv-comment-toggle:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-comment-toggle svg { stroke: #444; }
+.cv-theme-light .cv-comment-toggle.cv-active,
+.cv-theme-light .cv-comment-toggle[aria-expanded="true"] { background: rgba(66,133,244,.25); color: #1a73e8; }
+.cv-theme-light .cv-comment-toggle.cv-active:hover,
+.cv-theme-light .cv-comment-toggle[aria-expanded="true"]:hover { background: rgba(66,133,244,.35); }
+.cv-theme-light .cv-comment-wrap {
+  background: rgba(0,0,0,.35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+}
+.cv-theme-light .cv-comment-title { color: #fff; }
+.cv-theme-light .cv-comment-author { color: rgba(255,255,255,.7); }
+.cv-theme-light .cv-comment-sep { border-bottom-color: rgba(255,255,255,.3); }
+.cv-theme-light .cv-comment-inner { color: rgba(255,255,255,.95); }
+/* carousel strip (thumbnails) in light mode */
+.cv-theme-light .cv-carousel-wrap {
+  border-top-color: rgba(0,0,0,.08);
+  background: rgba(0,0,0,.03);
+}
+.cv-theme-light .cv-carousel-nav {
+  background: rgba(0,0,0,.1);
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0,0,0,.12);
+}
+.cv-theme-light .cv-carousel-nav:hover {
+  background: rgba(0,0,0,.18);
+}
+.cv-theme-light .cv-carousel-nav:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-carousel-nav svg { stroke: #333; }
+.cv-theme-light .cv-carousel {
+  background: rgba(0,0,0,.04);
+}
+.cv-theme-light .cv-carousel::-webkit-scrollbar-track { background: rgba(0,0,0,.06); }
+.cv-theme-light .cv-carousel::-webkit-scrollbar-thumb { background: rgba(0,0,0,.2); }
+.cv-theme-light .cv-carousel::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.3); }
+
+.cv-theme-light .cv-shortcuts-popup-inner,
+.cv-theme-light .cv-pdf-sidebar,
+.cv-theme-light .cv-pdf-main,
+.cv-theme-light .cv-comment-wrap {
+  scrollbar-color: rgba(0,0,0,.25) rgba(0,0,0,.06);
+}
+.cv-theme-light .cv-shortcuts-popup-inner::-webkit-scrollbar-track,
+.cv-theme-light .cv-pdf-sidebar::-webkit-scrollbar-track,
+.cv-theme-light .cv-pdf-main::-webkit-scrollbar-track,
+.cv-theme-light .cv-comment-wrap::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.06);
+}
+.cv-theme-light .cv-shortcuts-popup-inner::-webkit-scrollbar-thumb,
+.cv-theme-light .cv-pdf-sidebar::-webkit-scrollbar-thumb,
+.cv-theme-light .cv-pdf-main::-webkit-scrollbar-thumb,
+.cv-theme-light .cv-comment-wrap::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.2);
+}
+.cv-theme-light .cv-shortcuts-popup-inner::-webkit-scrollbar-thumb:hover,
+.cv-theme-light .cv-pdf-sidebar::-webkit-scrollbar-thumb:hover,
+.cv-theme-light .cv-pdf-main::-webkit-scrollbar-thumb:hover,
+.cv-theme-light .cv-comment-wrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,.3);
+}
+.cv-theme-light .cv-inline-wrap,
+.cv-theme-light .cv-markdown-body {
+  scrollbar-color: rgba(0,0,0,.25) rgba(0,0,0,.08);
+}
+.cv-theme-light .cv-inline-wrap::-webkit-scrollbar-track,
+.cv-theme-light .cv-markdown-body::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.08);
+}
+.cv-theme-light .cv-inline-wrap::-webkit-scrollbar-thumb,
+.cv-theme-light .cv-markdown-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.22);
+}
+.cv-theme-light .cv-inline-wrap::-webkit-scrollbar-thumb:hover,
+.cv-theme-light .cv-markdown-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,.35);
+}
+.cv-theme-light .cv-carousel-item {
+  background: rgba(0,0,0,.06);
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+.cv-theme-light .cv-carousel-item:hover {
+  background: rgba(0,0,0,.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.cv-theme-light .cv-carousel-item.cv-active {
+  border-color: rgba(26,115,232,.9);
+  background: rgba(66,133,244,.2);
+  box-shadow: 0 0 0 1px rgba(66,133,244,.35), 0 2px 8px rgba(0,0,0,.15);
+}
+.cv-theme-light .cv-carousel-play-icon {
+  background: rgba(0,0,0,.4);
+  color: rgba(255,255,255,.95);
+}
+.cv-theme-light .cv-carousel-play-icon svg { stroke: currentColor; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+.cv-theme-light .cv-carousel-no-thumb {
+  color: rgba(0,0,0,.6);
+}
+.cv-theme-light .cv-carousel-item .cv-carousel-filename {
+  color: #1a1a1a;
+  background: linear-gradient(transparent, rgba(0,0,0,.65));
+}
+.cv-theme-light .cv-close { background: rgba(0,0,0,.06); color: #333; }
+.cv-theme-light .cv-close:hover { background: rgba(0,0,0,.12); }
+.cv-theme-light .cv-close:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-nav:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-tb-btn:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-zoom-slider:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-poll-option-label-wrap input:focus-visible { outline-color: #1a73e8; }
+.cv-theme-light .cv-nav { background: rgba(255,255,255,.92); color: #333; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.cv-theme-light .cv-nav:hover { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.cv-theme-light .cv-nav:focus,
+.cv-theme-light .cv-nav:active,
+.cv-theme-light .cv-nav:focus-visible {
+  background: #fff !important;
+  color: #333 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25) !important;
+}
+.cv-theme-light .cv-nav svg { stroke: #333; }
+
+/* toolbar */
+.cv-theme-light .cv-toolbar { background: rgba(0,0,0,.04); }
+.cv-theme-light .cv-poll-option {
+  background: rgba(0,0,0,.06);
+  border-color: rgba(0,0,0,.12);
+}
+.cv-theme-light .cv-poll-option-label-wrap { color: #1a1a1a; }
+.cv-theme-light .cv-poll-option-label-wrap input[type="radio"],
+.cv-theme-light .cv-poll-option-label-wrap input[type="checkbox"] {
+  accent-color: #1a73e8;
+}
+.cv-theme-light .cv-poll-option-updated {
+  color: #2e7d32;
+}
+.cv-theme-light .cv-tb-btn { background: rgba(0,0,0,.06); color: #444; }
+.cv-theme-light .cv-tb-btn:hover { background: rgba(0,0,0,.12); }
+.cv-theme-light .cv-tb-btn.cv-active { background: rgba(66,133,244,.25); color: #1a73e8; }
+/* Scoped so active state wins over host project button styles */
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn.cv-active { background: rgba(66,133,244,.25) !important; color: #1a73e8 !important; }
+.cv-overlay.cv-theme-light .cv-toolbar .cv-tb-btn.cv-active:hover { background: rgba(66,133,244,.35) !important; color: #1a73e8 !important; }
+.cv-theme-light .cv-tb-sep { background: rgba(0,0,0,.1); }
+
+/* zoom */
+.cv-theme-light .cv-zoom-slider { background: rgba(0,0,0,.15); }
+.cv-theme-light .cv-zoom-slider::-webkit-slider-thumb { background: #333; }
+.cv-theme-light .cv-zoom-slider::-moz-range-thumb { background: #333; }
+.cv-theme-light .cv-zoom-pct { color: #555; }
+
+/* loader */
+.cv-theme-light .cv-spinner { border-color: rgba(0,0,0,.1); border-top-color: rgba(0,0,0,.6); }
+.cv-theme-light .cv-html-iframe-loader { background: rgba(255, 255, 255, 0.55); }
+
+/* video */
+.cv-theme-light .cv-video-wrap { background: #111; }
+.cv-theme-light .cv-jp-big-play { color: #fff; }
+.cv-theme-light .cv-jp-big-play svg { background: rgba(100,100,100,.9); }
+.cv-theme-light .cv-jp-big-play:hover svg { background: rgba(120,120,120,.95); }
+.cv-theme-light .cv-jp-controls { background: linear-gradient(transparent, rgba(0,0,0,.65)); }
+.cv-theme-light .cv-jp-time { color: rgba(255,255,255,.75); }
+.cv-theme-light .cv-jp-progress { background: rgba(255,255,255,.25); }
+.cv-theme-light .cv-jp-play-bar { background: #4285f4; }
+.cv-theme-light .cv-jp-volume { background: rgba(255,255,255,.25); }
+.cv-theme-light .cv-jp-volume-val { background: #fff; }
+
+/* audio */
+.cv-theme-light .cv-audio-icon { background: rgba(0,0,0,.04); }
+.cv-theme-light .cv-audio-icon svg { stroke: #666; }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-controls { background: rgba(0,0,0,.04); }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-btn { color: #444; }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-time { color: #888; }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-progress { background: rgba(0,0,0,.1); }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-play-bar { background: #34a853; }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-volume { background: rgba(0,0,0,.1); }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-volume-val { background: #555; }
+
+/* speed select — ensure visible in light theme (video bar is dark, audio bar is light) */
+.cv-theme-light .cv-jp-speed {
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(0,0,0,.2);
+  color: #333;
+  min-width: 52px;
+}
+.cv-theme-light .cv-jp-speed option { background: #fff; color: #333; }
+.cv-theme-light .cv-jp-audio-ui .cv-jp-speed {
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(0,0,0,.15);
+  color: #444;
+}
+
+/* pdf */
+.cv-theme-light .cv-pdf-sidebar { background: rgba(0,0,0,.03); border-right-color: rgba(0,0,0,.08); }
+.cv-theme-light .cv-pdf-thumb:hover { border-color: rgba(0,0,0,.2); }
+.cv-theme-light .cv-pdf-thumb.cv-active { border-color: #4285f4; }
+.cv-theme-light .cv-pdf-thumb-num { background: rgba(255,255,255,.8); color: #555; }
+.cv-theme-light .cv-pdf-canvas { box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+
+/* unsupported */
+.cv-theme-light .cv-unsupported-icon svg { stroke: #555; }
+.cv-theme-light .cv-unsupported-ext { background: rgba(0,0,0,.06); color: rgba(0,0,0,.45); }
+.cv-theme-light .cv-unsupported-name { color: #333; }
+.cv-theme-light .cv-unsupported-dl { background: rgba(66,133,244,.1); color: #1a73e8; }
+.cv-theme-light .cv-unsupported-dl:hover { background: rgba(66,133,244,.2); }
+
+/* error */
+.cv-theme-light .cv-error-card { color: rgba(0,0,0,.4); }
+.cv-theme-light .cv-error-card svg { stroke: #888; }
+.cv-theme-light .cv-error-dl { background: rgba(0,0,0,.06); color: #555; }
+.cv-theme-light .cv-error-dl:hover { background: rgba(0,0,0,.12); }
+
+.cv-theme-dark { background: rgba(0,0,0,.88); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   IMAGE EXTRACT-TEXT OVERLAY
+   ═══════════════════════════════════════════════════════════════════════ */
+.cv-extract-overlay {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+.cv-extract-layer {
+  position: relative;
+  margin: 0; padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.cv-extract-word {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  padding: 1px 0;
+  box-sizing: border-box;
+  white-space: nowrap;
+  background: rgba(255,245,157,.7);
+  color: #000;
+  border-radius: 2px;
+  user-select: text;
+  cursor: text;
+  pointer-events: auto;
+}
+.cv-theme-light .cv-extract-word {
+  background: rgba(255,245,157,.85);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .cv-shell { width: 100vw; height: 100vh; max-width: none; border-radius: 0; }
+  .cv-nav { width: 44px; height: 44px; }
+  .cv-header { padding: 8px; }
+  .cv-footer { padding: 6px 8px; flex-wrap: wrap; }
+  .cv-zoom-slider { width: 80px; }
+  .cv-jp-volume { display: none; }
+  .cv-pdf-sidebar { width: 100px; }
+  .cv-audio-wrap { max-width: 100%; }
+}

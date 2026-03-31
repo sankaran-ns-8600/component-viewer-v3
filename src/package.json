@@ -1,0 +1,72 @@
+{
+  "name": "component-viewer",
+  "version": "3.0.0",
+  "description": "Modular jQuery plugin for previewing attachments (images, video, audio, PDF, code, markdown, HTML) in a full-screen overlay with zoom/pan, keyboard navigation, carousel, slideshow, and OCR text extraction.",
+  "main": "component-viewer.js",
+  "types": "component-viewer.d.ts",
+  "style": "component-viewer.css",
+  "files": [
+    "src/",
+    "src/min/",
+    "component-viewer.js",
+    "component-viewer.min.js",
+    "component-viewer.css",
+    "component-viewer.min.css",
+    "component-viewer.d.ts",
+    "README.md",
+    "ARCHITECTURE.md",
+    "CHANGELOG.md",
+    "MIGRATION.md"
+  ],
+  "scripts": {
+    "minify:bundle": "npx terser component-viewer.js -o component-viewer.min.js -c -m --comments '/License|Author/'",
+    "minify:css": "npx cleancss -o component-viewer.min.css component-viewer.css 2>/dev/null || cp component-viewer.css component-viewer.min.css",
+    "minify:modules": "mkdir -p src/min && for f in src/*.js; do npx terser \"$f\" -o \"src/min/$(basename ${f%.js}.min.js)\" -c -m --comments '/License|Author/'; done",
+    "minify": "npm run minify:bundle && npm run minify:css && npm run minify:modules",
+    "test": "open tests/test.html",
+    "build": "node scripts/build-bundle.js && npm run minify"
+  },
+  "keywords": [
+    "jquery",
+    "plugin",
+    "lightbox",
+    "overlay",
+    "gallery",
+    "image",
+    "video",
+    "audio",
+    "pdf",
+    "viewer",
+    "attachment",
+    "preview",
+    "zoom",
+    "carousel",
+    "slideshow",
+    "ocr",
+    "markdown",
+    "wcag",
+    "accessible",
+    "modular"
+  ],
+  "author": "Sankaran N",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/component-viewer"
+  },
+  "peerDependencies": {
+    "jquery": ">=1.7.0"
+  },
+  "peerDependenciesMeta": {
+    "jquery": {
+      "optional": false
+    }
+  },
+  "optionalDependencies": {},
+  "devDependencies": {
+    "terser": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
