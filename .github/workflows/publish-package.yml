@@ -1,11 +1,9 @@
-# This workflow builds and publishes the same package to npm and to GitHub Packages on release.
-# Uses npm install (not npm ci) so no package-lock.json is required.
-
 name: Node.js Package
 
-on:
+"on":
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -53,7 +51,7 @@ jobs:
           scope: '@${{ github.repository_owner }}'
       - name: Set package scope for GitHub Packages
         run: |
-          sed -i 's|"@[^/]*/component-viewer-v3"|"@${{ github.repository_owner }}/component-viewer-v3"|' package.json
+          sed -i 's|"@[^/]*/component-viewer"|"@${{ github.repository_owner }}/component-viewer"|' package.json
       - name: Install dependencies
         run: npm install
       - name: Build
