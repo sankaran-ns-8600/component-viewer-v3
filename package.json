@@ -1,5 +1,5 @@
 {
-  "name": "component-viewer",
+  "name": "@sankaran-8600/component-viewer-v3",
   "version": "3.0.0",
   "description": "Modular jQuery plugin for previewing attachments (images, video, audio, PDF, code, markdown, HTML) in a full-screen overlay with zoom/pan, keyboard navigation, carousel, slideshow, and OCR text extraction.",
   "main": "component-viewer.js",
