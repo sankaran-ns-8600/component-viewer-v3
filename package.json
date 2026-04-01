@@ -1,6 +1,6 @@
 {
-  "name": "@sankaran-8600/component-viewer-v3",
-  "version": "3.0.0",
+  "name": "@sankaran-8600/component-viewer",
+  "version": "2.0.0",
   "description": "Modular jQuery plugin for previewing attachments (images, video, audio, PDF, code, markdown, HTML) in a full-screen overlay with zoom/pan, keyboard navigation, carousel, slideshow, and OCR text extraction.",
   "main": "component-viewer.js",
   "types": "component-viewer.d.ts",
@@ -52,7 +52,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/component-viewer"
+    "url": "https://github.com/sankaran-ns-8600/component-viewer-v3"
   },
   "peerDependencies": {
     "jquery": ">=1.7.0"
