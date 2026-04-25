@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Markdown renderer
+ * ComponentViewer — Markdown renderer
  *
  * Registers the "markdown" built-in renderer.
  * Depends on: utils.js, core.js

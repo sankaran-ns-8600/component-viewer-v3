@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Minimize / restore feature
+ * ComponentViewer — Minimize / restore feature
  *
  * Injects minimize-related methods into the overlay singleton.
  * Depends on: utils.js, core.js

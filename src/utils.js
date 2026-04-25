@@ -1,4 +1,4 @@
-/* ComponentViewer v3 — shared utilities, constants, and helpers.
+/* ComponentViewer — shared utilities, constants, and helpers.
  * Extracted from v2 monolith. All public API lives on CV.Utils. */
 /* No I18N */
 (function ($, window, document) {

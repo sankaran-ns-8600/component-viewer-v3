@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Comments feature
+ * ComponentViewer — Comments feature
  *
  * Injects comment normalization and rendering methods into the overlay.
  * Depends on: utils.js, core.js

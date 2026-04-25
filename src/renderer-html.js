@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — HTML / iframe renderer
+ * ComponentViewer — HTML / iframe renderer
  *
  * Registers the "html" built-in renderer.
  * Depends on: utils.js, core.js

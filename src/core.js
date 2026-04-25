@@ -1,4 +1,4 @@
-/* ComponentViewer v3 — core module.
+/* ComponentViewer — core module.
  * Overlay singleton (shared DOM, lifecycle, events, toolbar, keyboard, theme, fullscreen, navigation),
  * ComponentViewer class, and jQuery plugin bridge.
  * Renderers and optional features are loaded separately and registered via CV.registerRenderer / CV.registerFeature. */
@@ -266,7 +266,7 @@
       this._bindTooltip();
       this.built = true;
 
-      /* v3: initialize all registered features */
+      /* Initialize all registered features */
       var featureNames = Object.keys(CV.features);
       for (var f = 0; f < featureNames.length; f++) {
         CV.features[featureNames[f]](Overlay, U);
@@ -2900,7 +2900,7 @@
     return $container;
   };
 
-  /* --- v3 registration API --- */
+  /* --- Module registration API --- */
   CV.renderers = CV.renderers || {};
   CV.features = CV.features || {};
   CV.registerRenderer = function (type, fn) { CV.renderers[type] = fn; };

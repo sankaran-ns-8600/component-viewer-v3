@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Poll option feature
+ * ComponentViewer — Poll option feature
  *
  * Injects poll-option rendering into the overlay singleton.
  * Depends on: utils.js, core.js

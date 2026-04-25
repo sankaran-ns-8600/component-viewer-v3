@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — PDF Renderer
+ * ComponentViewer — PDF Renderer
  *
  * Provides two renderers:
  *   builtInPdfIframeRenderer  – simple <iframe> fallback

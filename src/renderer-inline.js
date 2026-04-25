@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Inline (code / text) renderer
+ * ComponentViewer — Inline (code / text) renderer
  *
  * Registers the "inline" built-in renderer.
  * Depends on: utils.js, core.js

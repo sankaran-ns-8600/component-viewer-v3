@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Slideshow feature
+ * ComponentViewer — Slideshow feature
  *
  * Injects slideshow progress-bar and play/pause button methods into the overlay.
  * Depends on: utils.js, core.js

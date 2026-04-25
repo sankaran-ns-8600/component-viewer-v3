@@ -1,5 +1,5 @@
 /**
- * ComponentViewer v3 — Carousel feature
+ * ComponentViewer — Carousel feature
  *
  * Injects carousel-related methods into the overlay singleton.
  * Depends on: utils.js, core.js
