@@ -1,7 +1,7 @@
 /// <reference types="jquery" />
 
 /**
- * Type definitions for ComponentViewer jQuery plugin v3.
+ * Type definitions for the ComponentViewer jQuery plugin.
  * @see https://github.com/ — implementation: component-viewer.js
  */
 
@@ -518,7 +518,7 @@ interface ComponentViewerDefaultStrings {
 }
 
 /**
- * v3 internal bridge: renderers, features, overlay singleton, and shared `Utils`.
+ * Internal bridge: renderers, features, overlay singleton, and shared `Utils`.
  * Prefer registering custom types via `registerRenderer` / `registerFeature` rather than mutating internals.
  */
 interface ComponentViewerCvBridge {

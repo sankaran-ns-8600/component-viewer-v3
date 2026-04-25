@@ -1,11 +1,12 @@
 /**
- * ComponentViewer v3 — Full Bundle
+ * ComponentViewer — Full Bundle
+ * All modules concatenated in dependency order.
  * License: MIT | Author: Sankaran N
  */
 
 /* ====== utils.js (660 lines) ====== */
 
-/* ComponentViewer v3 — shared utilities, constants, and helpers.
+/* ComponentViewer — shared utilities, constants, and helpers.
  * Extracted from v2 monolith. All public API lives on CV.Utils. */
 /* No I18N */
 (function ($, window, document) {
@@ -668,7 +669,7 @@
 
 /* ====== core.js (2918 lines) ====== */
 
-/* ComponentViewer v3 — core module.
+/* ComponentViewer — core module.
  * Overlay singleton (shared DOM, lifecycle, events, toolbar, keyboard, theme, fullscreen, navigation),
  * ComponentViewer class, and jQuery plugin bridge.
  * Renderers and optional features are loaded separately and registered via CV.registerRenderer / CV.registerFeature. */
@@ -936,7 +937,7 @@
       this._bindTooltip();
       this.built = true;
 
-      /* v3: initialize all registered features */
+      /* Initialize all registered features */
       var featureNames = Object.keys(CV.features);
       for (var f = 0; f < featureNames.length; f++) {
         CV.features[featureNames[f]](Overlay, U);
@@ -3570,7 +3571,7 @@
     return $container;
   };
 
-  /* --- v3 registration API --- */
+  /* --- Module registration API --- */
   CV.renderers = CV.renderers || {};
   CV.features = CV.features || {};
   CV.registerRenderer = function (type, fn) { CV.renderers[type] = fn; };
@@ -4350,7 +4351,7 @@
 /* ====== renderer-pdf.js (818 lines) ====== */
 
 /**
- * ComponentViewer v3 — PDF Renderer
+ * ComponentViewer — PDF Renderer
  *
  * Provides two renderers:
  *   builtInPdfIframeRenderer  – simple <iframe> fallback
@@ -5171,7 +5172,7 @@
 /* ====== renderer-inline.js (175 lines) ====== */
 
 /**
- * ComponentViewer v3 — Inline (code / text) renderer
+ * ComponentViewer — Inline (code / text) renderer
  *
  * Registers the "inline" built-in renderer.
  * Depends on: utils.js, core.js
@@ -5349,7 +5350,7 @@
 /* ====== renderer-markdown.js (113 lines) ====== */
 
 /**
- * ComponentViewer v3 — Markdown renderer
+ * ComponentViewer — Markdown renderer
  *
  * Registers the "markdown" built-in renderer.
  * Depends on: utils.js, core.js
@@ -5465,7 +5466,7 @@
 /* ====== renderer-html.js (134 lines) ====== */
 
 /**
- * ComponentViewer v3 — HTML / iframe renderer
+ * ComponentViewer — HTML / iframe renderer
  *
  * Registers the "html" built-in renderer.
  * Depends on: utils.js, core.js
@@ -5602,7 +5603,7 @@
 /* ====== feature-carousel.js (155 lines) ====== */
 
 /**
- * ComponentViewer v3 — Carousel feature
+ * ComponentViewer — Carousel feature
  *
  * Injects carousel-related methods into the overlay singleton.
  * Depends on: utils.js, core.js
@@ -5760,7 +5761,7 @@
 /* ====== feature-slideshow.js (87 lines) ====== */
 
 /**
- * ComponentViewer v3 — Slideshow feature
+ * ComponentViewer — Slideshow feature
  *
  * Injects slideshow progress-bar and play/pause button methods into the overlay.
  * Depends on: utils.js, core.js
@@ -5850,7 +5851,7 @@
 /* ====== feature-minimize.js (118 lines) ====== */
 
 /**
- * ComponentViewer v3 — Minimize / restore feature
+ * ComponentViewer — Minimize / restore feature
  *
  * Injects minimize-related methods into the overlay singleton.
  * Depends on: utils.js, core.js
@@ -5971,7 +5972,7 @@
 /* ====== feature-comments.js (52 lines) ====== */
 
 /**
- * ComponentViewer v3 — Comments feature
+ * ComponentViewer — Comments feature
  *
  * Injects comment normalization and rendering methods into the overlay.
  * Depends on: utils.js, core.js
@@ -6026,7 +6027,7 @@
 /* ====== feature-poll.js (90 lines) ====== */
 
 /**
- * ComponentViewer v3 — Poll option feature
+ * ComponentViewer — Poll option feature
  *
  * Injects poll-option rendering into the overlay singleton.
  * Depends on: utils.js, core.js

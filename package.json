@@ -1,6 +1,6 @@
 {
   "name": "@sankaran-8600/component-viewer",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "Modular jQuery plugin for previewing attachments (images, video, audio, PDF, code, markdown, HTML) in a full-screen overlay with zoom/pan, keyboard navigation, carousel, slideshow, and OCR text extraction.",
   "main": "component-viewer.js",
   "types": "component-viewer.d.ts",
@@ -15,8 +15,8 @@
     "component-viewer.d.ts",
     "README.md",
     "ARCHITECTURE.md",
-    "CHANGELOG.md",
-    "MIGRATION.md"
+    "FLOWS.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "minify:bundle": "npx terser component-viewer.js -o component-viewer.min.js -c -m --comments '/License|Author/'",

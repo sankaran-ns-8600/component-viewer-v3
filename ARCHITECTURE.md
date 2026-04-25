@@ -1,4 +1,4 @@
-# ComponentViewer v3 — Architecture
+# ComponentViewer — Architecture
 
 ## Design principles
 
@@ -6,7 +6,7 @@
 2. **Explicit dependencies**: renderers receive `(item, $stage, inst, overlay)` instead of reading `Overlay.activeInstance`. This makes the data flow visible and testable.
 3. **WCAG-first**: accessibility (focus trap, ARIA, keyboard labels) is on by default, not opt-in.
 4. **Zero globals**: everything lives inside a jQuery IIFE. The only namespace is `$.fn.componentViewer` and the internal `$.fn.componentViewer._cv` bridge used by modules.
-5. **Full-bundle compatibility**: `component-viewer.js` concatenates all modules in dependency order and exposes the same API as v2 — drop-in replacement.
+5. **Full bundle**: `component-viewer.js` concatenates all modules in dependency order for a single-file drop-in.
 
 ## Module registration
 
@@ -97,22 +97,14 @@ core.js
     └──► feature-extract.js
 ```
 
-## Changes from v2
+## Defaults
 
-### Breaking changes
+- `wcag` defaults to `true`. Set `wcag: false` to disable accessibility helpers.
+- CSS is plain CSS — deploy the `.css` file directly to browsers.
 
-- `wcag` defaults to `true` (was `false`). Set `wcag: false` to restore v2 behavior.
-- CSS no longer uses Less syntax — deploy the `.css` file directly to browsers.
-
-### Non-breaking changes
-
-- All v2 options, callbacks, and public API methods work unchanged.
-- The full bundle (`component-viewer.js`) is a drop-in replacement for v2's `component-viewer.js`.
-- Renderers that are not included simply show the unsupported card for that type.
-
-### Internal changes
+## Internals
 
 - `Overlay` methods for carousel, slideshow, minimize, comments, poll, and extract are injected by their respective feature modules instead of being defined inline.
-- Built-in renderers call `overlay` parameter methods instead of the global `Overlay` variable.
-- `_isGifItem()` moved to renderer-image (available to core via the bridge).
-- `syncCvImgTransformDimensions`, `getCvImageContentMetrics`, and OCR helpers moved to their respective modules.
+- Built-in renderers call `overlay` parameter methods instead of a global `Overlay` variable.
+- `_isGifItem()` lives in renderer-image (available to core via the bridge).
+- `syncCvImgTransformDimensions`, `getCvImageContentMetrics`, and OCR helpers live in their respective modules.

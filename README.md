@@ -1,19 +1,19 @@
-# ComponentViewer v3
+# ComponentViewer
 
 A modular jQuery plugin for previewing attachments (images, video, audio, PDF, code, markdown, HTML) in a full-screen overlay with zoom/pan, keyboard navigation, carousel, slideshow, and OCR text extraction.
 
-## What's new in v3
+## Highlights
 
-- **Modular architecture**: include only the renderers and features you need, or use the full bundle for drop-in compatibility with v2.
+- **Modular architecture**: include only the renderers and features you need, or use the full bundle for a single-file drop-in.
 - **WCAG on by default**: focus trap, ARIA attributes, and keyboard labels are enabled out of the box.
 - **Explicit instance passing**: renderers receive `inst` and `overlay` as parameters instead of reading a global singleton — cleaner, more testable code.
-- **Fixed CSS**: removed Less-only syntax (`~"..."`) for pure CSS deployment; reduced `!important` usage.
-- **Improved security**: markdown rendered through `textContent` assignment by default; DOMPurify integration point for hosts who need raw HTML.
+- **Pure CSS**: no Less-only syntax (`~"..."`); reduced `!important` usage.
+- **Safer defaults**: markdown rendered through `textContent` assignment by default; DOMPurify integration point for hosts who need raw HTML.
 - **Smaller footprint**: core + image renderer is ~2.5 KB gzipped; add only what you use.
 
 ## Quick start
 
-### Full bundle (same API as v2)
+### Full bundle
 
 ```html
 <link rel="stylesheet" href="component-viewer.css" />
@@ -44,7 +44,7 @@ $('#gallery').componentViewer({
 ## File structure
 
 ```
-component-viewer-v3/
+component-viewer/
 ├── src/
 │   ├── utils.js              # Shared helpers, constants, security, I18N
 │   ├── core.js               # Overlay, lifecycle, toolbar, keyboard, theme

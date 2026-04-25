@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ComponentViewer v3 — API Documentation</title>
+  <title>ComponentViewer — API Documentation</title>
   <style>
     :root {
       --bg: #f0f2f5;
@@ -301,6 +301,33 @@
       color: #fff !important;
       transform: translateY(-1px);
     }
+    .doc-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .doc-header-export-pdf {
+      font-size: 14px;
+      font-family: inherit;
+      padding: 8px 14px;
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, transform .1s;
+    }
+    .doc-header-export-pdf:hover {
+      background: #f6f8fa;
+      border-color: var(--accent-hover);
+      color: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+    .doc-header-export-pdf:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
     @media (max-width: 900px) {
       .layout { flex-direction: column; }
       nav {
@@ -349,18 +376,34 @@
       font-size: 14px;
       margin: 0 0 12px;
     }
-    /* Print: hide nav, full-width content, avoid breaking code blocks */
+    /* Print: hide nav, full-width content, avoid breaking code blocks — also used for Export PDF (Save as PDF) */
     @media print {
+      @page {
+        margin: 14mm 12mm;
+      }
+      body {
+        background: #fff !important;
+      }
       .layout { display: block; }
+      .doc-skip-link,
+      .doc-hamburger,
+      .doc-nav-backdrop { display: none !important; }
       nav { display: none !important; }
       main {
-        margin: 0;
+        margin: 0 !important;
         max-width: none;
         box-shadow: none;
-        padding: 16px;
+        padding: 0;
       }
       pre, .code-block-wrapper { break-inside: avoid; page-break-inside: avoid; }
-      .doc-header a[href="example.html"], .copy-code-btn { display: none !important; }
+      .doc-header a[href="example.html"],
+      .doc-header-export-pdf,
+      .copy-code-btn { display: none !important; }
+      /* Interactive playground controls omit poorly in PDF; keep section title + intro */
+      #playground-panel { display: none !important; }
+      table { break-inside: auto; }
+      thead { display: table-header-group; }
+      tr, img { break-inside: avoid; }
     }
 
     /* Sidebar active link (scroll-spy) */
@@ -494,7 +537,37 @@
     .doc-skip-link:focus {
       top: 0;
     }
+
+    /* Mermaid flowchart containers */
+    .cv-flowchart {
+      margin: 24px 0;
+      padding: 20px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+    .cv-flowchart-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    #doc-feature-previews .doc-cv-item {
+      display: block;
+      cursor: zoom-in;
+      line-height: 0;
+      transition: opacity 0.15s ease;
+    }
+    #doc-feature-previews .doc-cv-item:hover { opacity: 0.92; }
+    #doc-feature-previews .doc-cv-item:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
   </style>
+  <link rel="stylesheet" href="component-viewer.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
 </head>
 <body>
@@ -508,6 +581,7 @@
       </div>
       <div class="doc-nav-scroll">
       <p id="doc-no-results" class="doc-no-results" aria-live="polite">No matching sections.</p>
+
       <h2>Introduction</h2>
       <a href="#overview">Overview</a>
       <a href="#demo">Demo</a>
@@ -515,30 +589,27 @@
       <h2>Getting started</h2>
       <a href="#getting-started">Getting started</a>
       <a href="#installation" class="nav-sub">Installation</a>
-      <a href="#modular-install" class="nav-sub">Modular (v3)</a>
+      <a href="#modular-install" class="nav-sub">Modular</a>
+      <a href="#min-files" class="nav-sub">Minified files</a>
       <a href="#quick-start" class="nav-sub">Quick start</a>
       <a href="#minimal-example" class="nav-sub">Minimal example</a>
       <a href="#building-with-plugin" class="nav-sub">Building with the plugin</a>
       <a href="#file-structure" class="nav-sub">File structure</a>
 
-      <h2>Items &amp; content</h2>
-      <a href="#item-data">Item data</a>
-      <a href="#content-types">Content types</a>
-
       <h2>Configuration</h2>
       <a href="#options">Options reference</a>
       <a href="#options-quick-ref" class="nav-sub">Quick reference</a>
       <a href="#options-general" class="nav-sub">General options</a>
+      <a href="#options-rtl" class="nav-sub">RTL mode (<code>isRTL</code>)</a>
+      <a href="#options-minimize" class="nav-sub">Minimize mode</a>
       <a href="#options-pdf" class="nav-sub">PDF options</a>
       <a href="#options-media" class="nav-sub">Media (jPlayer)</a>
       <a href="#options-video-hd" class="nav-sub">Video HD quality</a>
       <a href="#options-video-before-play" class="nav-sub">Video: before play &amp; HD gate</a>
       <a href="#options-inline" class="nav-sub">Inline code &amp; highlighting</a>
-      <a href="#options-rtl" class="nav-sub">RTL mode (<code>isRTL</code>)</a>
-      <a href="#options-minimize" class="nav-sub">Minimize mode</a>
       <a href="#options-carousel" class="nav-sub">Carousel</a>
-      <a href="#options-slideshow" class="nav-sub">Slideshow</a>
       <a href="#options-stage-only" class="nav-sub">Stage only</a>
+      <a href="#options-slideshow" class="nav-sub">Slideshow</a>
       <a href="#poll-options" class="nav-sub">Poll options</a>
       <a href="#attachment-comment" class="nav-sub">Attachment comment</a>
       <a href="#image-extract-text" class="nav-sub">Image extract-text (OCR)</a>
@@ -546,20 +617,29 @@
       <a href="#options-callbacks" class="nav-sub">Data &amp; callbacks</a>
       <a href="#options-wcag" class="nav-sub">WCAG option (<code>wcag</code>)</a>
 
-      <h2>UI &amp; text</h2>
+      <h2>Items &amp; content</h2>
+      <a href="#item-data">Item data</a>
+      <a href="#content-types">Content types</a>
+      <a href="#markdown" class="nav-sub">Markdown</a>
+
+      <h2>UI &amp; toolbar</h2>
       <a href="#toolbar">Toolbar &amp; image zoom</a>
-      <a href="#markdown">Markdown</a>
       <a href="#keyboard-shortcuts">Keyboard shortcuts</a>
       <a href="#i18n">I18N (strings)</a>
 
-      <h2>API &amp; integration</h2>
+      <h2>API &amp; lifecycle</h2>
       <a href="#callbacks">Callbacks (lifecycle)</a>
+      <a href="#flowcharts" class="nav-sub">Flowcharts</a>
       <a href="#public-api">Public API</a>
-      <a href="#accessibility">Accessibility overview</a>
+
+      <h2>Platform</h2>
+      <a href="#accessibility">Accessibility</a>
       <a href="#responsiveness-gestures">Responsiveness &amp; gestures</a>
-      <a href="#security">Security</a>
       <a href="#css-customization">CSS customization</a>
+      <a href="#security">Security</a>
       <a href="#browser-support">Browser support</a>
+
+      <h2>Comparison &amp; migration</h2>
       <a href="#comparison-colorbox">vs Colorbox / Lightbox / LC Lightbox</a>
       <a href="#migration-colorbox" class="nav-sub">Migration from Colorbox</a>
 
@@ -569,11 +649,6 @@
       <h2>Examples</h2>
       <a href="#examples">Examples overview</a>
       <a href="#examples-basic" class="nav-sub">Basic gallery</a>
-      <a href="#examples-programmatic" class="nav-sub">Programmatic open</a>
-      <a href="#examples-items-array" class="nav-sub">Items array (no DOM)</a>
-      <a href="#examples-static-api" class="nav-sub">Static API</a>
-      <a href="#examples-html-src" class="nav-sub">HTML iframe (src)</a>
-      <a href="#examples-before-open-gate" class="nav-sub">Before open &amp; gate content</a>
       <a href="#examples-poll" class="nav-sub">Poll options</a>
       <a href="#examples-comments" class="nav-sub">Attachment comments</a>
       <a href="#examples-extract-text" class="nav-sub">Image extract-text</a>
@@ -582,6 +657,11 @@
       <a href="#examples-slideshow" class="nav-sub">Slideshow</a>
       <a href="#examples-hd" class="nav-sub">Video HD</a>
       <a href="#examples-before-video-play" class="nav-sub">Video before play (jPlayer)</a>
+      <a href="#examples-programmatic" class="nav-sub">Programmatic open</a>
+      <a href="#examples-items-array" class="nav-sub">Items array (no DOM)</a>
+      <a href="#examples-static-api" class="nav-sub">Static API</a>
+      <a href="#examples-html-src" class="nav-sub">HTML iframe (src)</a>
+      <a href="#examples-before-open-gate" class="nav-sub">Before open &amp; gate content</a>
 
       <h2>Help</h2>
       <a href="#changelog">Changelog</a>
@@ -591,10 +671,13 @@
     <main>
       <div class="doc-header">
         <div>
-      <h1>ComponentViewer v3</h1>
+      <h1>ComponentViewer</h1>
       <p class="subtitle">API documentation — Modular jQuery plugin for attachment and media preview in an overlay</p>
         </div>
-        <a href="example.html">Open example</a>
+        <div class="doc-header-actions">
+          <a href="example.html">Open example</a>
+          <button type="button" class="doc-header-export-pdf" id="doc-export-pdf" title="Opens the print dialog — choose Save as PDF or Microsoft Print to PDF" aria-label="Export documentation as PDF using the browser print dialog">Export PDF</button>
+        </div>
       </div>
 
       <section id="overview" class="section">
@@ -612,25 +695,36 @@
         </ul>
 
         <h3>Feature previews</h3>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0;">
+        <p style="font-size:14px;color:#57606a;margin:0 0 14px;">Click any screenshot to open it in the ComponentViewer overlay (zoom, download, prev/next between screenshots).</p>
+        <div id="doc-feature-previews" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0;">
           <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);">
-            <img src="docs-assets/feature-image-overlay.png" alt="Image overlay with dark theme, zoom slider, and navigation" style="width:100%;display:block;" />
+            <a class="doc-cv-item cv-item" href="docs-assets/feature-image-overlay.png" data-type="image" data-title="Image overlay">
+              <img src="docs-assets/feature-image-overlay.png" alt="Image overlay with dark theme, zoom slider, and navigation" style="width:100%;display:block;" />
+            </a>
             <div style="padding:10px 14px;font-size:13px;color:#57606a;">Image overlay — Dark theme • Counter • Zoom slider • Toolbar</div>
           </div>
           <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);">
-            <img src="docs-assets/feature-pdf-viewer.png" alt="PDF viewer with page navigation toolbar" style="width:100%;display:block;" />
+            <a class="doc-cv-item cv-item" href="docs-assets/feature-pdf-viewer.png" data-type="image" data-title="PDF viewer">
+              <img src="docs-assets/feature-pdf-viewer.png" alt="PDF viewer with page navigation toolbar" style="width:100%;display:block;" />
+            </a>
             <div style="padding:10px 14px;font-size:13px;color:#57606a;">PDF viewer — Thumbnails • Page nav • Zoom • Rotate • Print</div>
           </div>
           <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);">
-            <img src="docs-assets/feature-video-player.png" alt="Video player with seek bar, playback speed, and volume controls" style="width:100%;display:block;" />
+            <a class="doc-cv-item cv-item" href="docs-assets/feature-video-player.png" data-type="image" data-title="Video player">
+              <img src="docs-assets/feature-video-player.png" alt="Video player with seek bar, playback speed, and volume controls" style="width:100%;display:block;" />
+            </a>
             <div style="padding:10px 14px;font-size:13px;color:#57606a;">Video player — Seek bar • Playback speed • Volume • Fullscreen</div>
           </div>
           <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);">
-            <img src="docs-assets/feature-carousel.png" alt="Carousel with thumbnail strip below the stage" style="width:100%;display:block;" />
+            <a class="doc-cv-item cv-item" href="docs-assets/feature-carousel.png" data-type="image" data-title="Carousel">
+              <img src="docs-assets/feature-carousel.png" alt="Carousel with thumbnail strip below the stage" style="width:100%;display:block;" />
+            </a>
             <div style="padding:10px 14px;font-size:13px;color:#57606a;">Carousel — Thumbnail strip • Active highlight • Slideshow button</div>
           </div>
           <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);">
-            <img src="docs-assets/feature-light-theme.png" alt="Light theme overlay with white background and dark controls" style="width:100%;display:block;" />
+            <a class="doc-cv-item cv-item" href="docs-assets/feature-light-theme.png" data-type="image" data-title="Light theme">
+              <img src="docs-assets/feature-light-theme.png" alt="Light theme overlay with white background and dark controls" style="width:100%;display:block;" />
+            </a>
             <div style="padding:10px 14px;font-size:13px;color:#57606a;">Light theme — White shell • Dark text • Theme toggle in header</div>
           </div>
         </div>
@@ -688,6 +782,7 @@
         <pre><code class="language-bash">npm i @sankaran-8600/component-viewer jquery</code></pre>
         <p>Install optional peers only if you need those features:</p>
         <pre><code class="language-bash">npm i jplayer pdfjs-dist marked</code></pre>
+        <p><strong>Source:</strong> <a href="https://github.com/sankaran-ns-8600/component-viewer-v3" target="_blank" rel="noopener noreferrer">Component Viewer on GitHub</a>.</p>
         <p><strong>Required:</strong> jQuery (1.7+ or 2.x / 3.x).</p>
         <p><strong>Optional:</strong></p>
         <ul>
@@ -740,8 +835,8 @@ $('#minimal-demo').componentViewer({ toolbar: { download: true, zoom: true } });
         </ol>
 
 
-        <h3 id="modular-install">Modular installation (v3)</h3>
-        <p>v3 splits the plugin into independent modules. Include only what you need:</p>
+        <h3 id="modular-install">Modular installation</h3>
+        <p>The plugin is split into independent modules. Include only what you need:</p>
 <pre><code class="language-markup">&lt;link rel="stylesheet" href="component-viewer.css" /&gt;
 &lt;script src="jquery.min.js"&gt;&lt;/script&gt;
 
@@ -764,6 +859,53 @@ $('#minimal-demo').componentViewer({ toolbar: { download: true, zoom: true } });
           Add <code>src/renderer-image.js</code> for image support, <code>src/renderer-pdf.js</code> for PDF, etc.
         </div>
         <p>Content types without a registered renderer show the "unsupported" fallback card with a download button. The full bundle (<code>component-viewer.js</code>) includes all modules and is a drop-in replacement for v2.</p>
+
+        <h4 id="min-files">Minified files for production</h4>
+        <p>Every source file has a pre-built minified version in <code>src/min/</code>. Use these in production for smaller download and faster parse times.</p>
+        <table>
+          <thead><tr><th>Development</th><th>Production</th><th>Size</th></tr></thead>
+          <tbody>
+            <tr><td><code>component-viewer.js</code></td><td><code>component-viewer.min.js</code></td><td>133 KB (47% of original)</td></tr>
+            <tr><td><code>component-viewer.css</code></td><td><code>component-viewer.min.css</code></td><td>56 KB (75% of original)</td></tr>
+            <tr><td><code>src/utils.js</code></td><td><code>src/min/utils.min.js</code></td><td>13.8 KB</td></tr>
+            <tr><td><code>src/core.js</code></td><td><code>src/min/core.min.js</code></td><td>68.9 KB</td></tr>
+            <tr><td><code>src/renderer-image.js</code></td><td><code>src/min/renderer-image.min.js</code></td><td>1.6 KB</td></tr>
+            <tr><td><code>src/renderer-video.js</code></td><td><code>src/min/renderer-video.min.js</code></td><td>9.5 KB</td></tr>
+            <tr><td><code>src/renderer-audio.js</code></td><td><code>src/min/renderer-audio.min.js</code></td><td>5.4 KB</td></tr>
+            <tr><td><code>src/renderer-pdf.js</code></td><td><code>src/min/renderer-pdf.min.js</code></td><td>12.3 KB</td></tr>
+            <tr><td><code>src/renderer-inline.js</code></td><td><code>src/min/renderer-inline.min.js</code></td><td>3.9 KB</td></tr>
+            <tr><td><code>src/renderer-markdown.js</code></td><td><code>src/min/renderer-markdown.min.js</code></td><td>2.2 KB</td></tr>
+            <tr><td><code>src/renderer-html.js</code></td><td><code>src/min/renderer-html.min.js</code></td><td>2.1 KB</td></tr>
+            <tr><td><code>src/feature-carousel.js</code></td><td><code>src/min/feature-carousel.min.js</code></td><td>2.6 KB</td></tr>
+            <tr><td><code>src/feature-slideshow.js</code></td><td><code>src/min/feature-slideshow.min.js</code></td><td>1.7 KB</td></tr>
+            <tr><td><code>src/feature-minimize.js</code></td><td><code>src/min/feature-minimize.min.js</code></td><td>2.1 KB</td></tr>
+            <tr><td><code>src/feature-comments.js</code></td><td><code>src/min/feature-comments.min.js</code></td><td>1.2 KB</td></tr>
+            <tr><td><code>src/feature-poll.js</code></td><td><code>src/min/feature-poll.min.js</code></td><td>1.8 KB</td></tr>
+            <tr><td><code>src/feature-extract.js</code></td><td><code>src/min/feature-extract.min.js</code></td><td>4.2 KB</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Production examples</h4>
+        <p><strong>Full bundle (production):</strong></p>
+<pre><code class="language-markup">&lt;link rel="stylesheet" href="component-viewer.min.css" /&gt;
+&lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="component-viewer.min.js"&gt;&lt;/script&gt;</code></pre>
+
+        <p><strong>Modular (production) — image + PDF only:</strong></p>
+<pre><code class="language-markup">&lt;link rel="stylesheet" href="component-viewer.min.css" /&gt;
+&lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="src/min/utils.min.js"&gt;&lt;/script&gt;
+&lt;script src="src/min/core.min.js"&gt;&lt;/script&gt;
+&lt;script src="src/min/renderer-image.min.js"&gt;&lt;/script&gt;
+&lt;script src="src/min/renderer-pdf.min.js"&gt;&lt;/script&gt;</code></pre>
+
+        <p><strong>Total for image + PDF (production):</strong> 56 KB CSS + 96 KB JS = <strong>152 KB</strong></p>
+
+        <div class="note">
+          <strong>Rebuilding minified files:</strong> Run <code>npm run minify</code> to regenerate all <code>.min.js</code> and <code>.min.css</code> files using <a href="https://terser.org/">Terser</a>. Or run <code>npm run build</code> to regenerate the full bundle from <code>src/</code> and then minify everything.
+        </div>
+
+
 
         <h4>Available modules</h4>
         <table>
@@ -789,7 +931,7 @@ $('#minimal-demo').componentViewer({ toolbar: { download: true, zoom: true } });
 
         <h3 id="file-structure">File structure</h3>
         <p>The ComponentViewer project includes the following files:</p>
-        <pre><code class="language-text">component-viewer-v3/
+        <pre><code class="language-text">component-viewer/
 ├── src/
 │   ├── utils.js              # Shared helpers, constants, security, I18N
 │   ├── core.js               # Overlay, lifecycle, toolbar, keyboard, theme
@@ -806,26 +948,27 @@ $('#minimal-demo').componentViewer({ toolbar: { download: true, zoom: true } });
 │   ├── feature-comments.js   # Attachment comment panel
 │   ├── feature-poll.js       # Poll option row
 │   └── feature-extract.js    # OCR text overlay
+│   └── min/                  # Minified versions of all modules
 ├── component-viewer.js       # Full bundle (all modules concatenated)
+├── component-viewer.min.js   # Minified full bundle (133 KB)
+├── component-viewer.min.css  # Minified CSS (56 KB)
 ├── component-viewer.css      # Styles
 ├── documentation.html        # API documentation (this file)
 ├── example.html              # Full demo
 ├── README.md                 # Project overview
 ├── ARCHITECTURE.md           # Module design and registration system
-├── CHANGELOG.md              # Version history
-└── MIGRATION.md              # Migration guide from v2</code></pre>
+└── CHANGELOG.md              # Version history</code></pre>
         <table>
           <thead><tr><th>File</th><th>Description</th></tr></thead>
           <tbody>
             <tr><td><code>src/*.js</code></td><td>Individual modules: utils, core, 7 renderers, 6 features. Include only what you need.</td></tr>
-            <tr><td><code>component-viewer.js</code></td><td>Full bundle: all modules concatenated in dependency order. Drop-in replacement for v2.</td></tr>
+            <tr><td><code>component-viewer.js</code></td><td>Full bundle: all modules concatenated in dependency order.</td></tr>
             <tr><td><code>component-viewer.css</code></td><td>Layout and theme styles. Pure CSS (no Less syntax). Works directly in browsers.</td></tr>
             <tr><td><code>documentation.html</code></td><td>API reference, interactive playground, and configuration options.</td></tr>
             <tr><td><code>example.html</code></td><td>Comprehensive examples with programmatic API buttons.</td></tr>
             <tr><td><code>README.md</code></td><td>Project overview and quick start.</td></tr>
             <tr><td><code>ARCHITECTURE.md</code></td><td>Module design, registration contracts, dependency graph.</td></tr>
-            <tr><td><code>CHANGELOG.md</code></td><td>Version history with breaking changes.</td></tr>
-            <tr><td><code>MIGRATION.md</code></td><td>Migration guide from v2 to v3.</td></tr>
+            <tr><td><code>CHANGELOG.md</code></td><td>Version history.</td></tr>
           </tbody>
         </table>
         <hr class="section-end" />
@@ -1288,7 +1431,8 @@ $('#minimal-demo').componentViewer({ toolbar: { download: true, zoom: true } });
         <h2>Content types</h2>
         <p>The plugin chooses a renderer in this order:</p>
         <ol>
-          <li><strong>onRender(item, $stage, viewer)</strong> — If it appends to <code>$stage</code>, the built-in renderer is skipped. It may return <code>{ toolbar: [...], destroy: function() }</code> to supply a custom toolbar and a cleanup function. See <a href="#callbacks">Callbacks (lifecycle)</a> for the full <code>onRender</code> return shape and execution order.</li>
+          <li><strong>onRender(item, $stage, viewer)</strong> — If it appends to <code>$stage</code>, the built-in renderer is skipped. It may return <code>{ toolbar: [...], destroy: function() }</code> to supply a custom toolbar and a cleanup function. See <a href="#callbacks">Callbacks (lifecycle)</a>
+      <a href="#flowcharts" class="nav-sub">Flowcharts</a> for the full <code>onRender</code> return shape and execution order.</li>
           <li><strong>Built-in by type</strong> — Based on <code>item.type</code> (default <code>'image'</code>).</li>
           <li><strong>Unsupported</strong> — If the stage is still empty, a "no preview" card is shown.</li>
         </ol>
@@ -1643,48 +1787,244 @@ $('#post').componentViewer({});</code></pre>
         <p>If <code>onRender</code> appends to <code>$stage</code> but does not return an object with <code>toolbar</code>, the plugin still builds the toolbar from the renderer and <code>toolbarItems</code>. For the full option table, see <a href="#options-callbacks">Data and callbacks</a>.</p>
 
 
-        <h3>Lifecycle diagram</h3>
-        <div class="note">
-          <strong>Visual overview</strong> of the callback sequence when opening and closing the overlay.
+        <h3 id="flowcharts">Flowcharts</h3>
+        <p>Select a flow to view its interactive diagram.</p>
+
+        <div style="margin:16px 0;">
+          <select id="cv-flowchart-select" style="padding:10px 16px;font-size:14px;border:1px solid var(--border);border-radius:6px;background:#fff;color:#24292f;min-width:300px;cursor:pointer;">
+            <option value="">-- Select a flowchart --</option>
+            <option value="fc-open">1. Item open lifecycle</option>
+            <option value="fc-close">2. Close lifecycle</option>
+            <option value="fc-render">3. Content render pipeline</option>
+            <option value="fc-toolbar">4. Toolbar resolution</option>
+            <option value="fc-keyboard">5. Keyboard dispatch</option>
+            <option value="fc-modular">6. Modular loading</option>
+            <option value="fc-gate">7. beforeOpen gate flow</option>
+            <option value="fc-zoom">8. Image zoom and pan</option>
+          </select>
         </div>
-<pre><code class="language-text">OPENING AN ITEM
-───────────────
-  User click / .open(idx)
-        │
-        ├── beforeCollectItems(viewer[, proceed])   [if set]
-        │         │
-        │     Items collected (DOM scan or items array)
-        │
-        ├── beforeOpen(item, element, proceed)      [if set]
-        │         │
-        │     Overlay visible with loader, toolbar hidden
-        │         │
-        │     proceed() or proceed({gateContent})
-        │
-        ├── onLoading(item, viewer)
-        │
-        ├── Stage cleared, content rendered
-        │     ├── onRender(item, $stage, viewer)       [if set]
-        │     └── Built-in renderer (image/video/PDF...)
-        │
-        ├── Toolbar resolved
-        │     └── onToolbar(item, toolbar, viewer)     [if set]
-        │
-        ├── onOpen(item, $stage, viewer)
-        │
-        └── onComplete(item, viewer)               [after transition]
 
+        <div id="fc-open" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    A["User click / .open(idx)"] --> B{beforeCollectItems?}
+    B -->|No| C[Collect items]
+    B -->|Yes| D["beforeCollectItems(viewer, proceed)"]
+    D --> C
+    C --> E{beforeOpen?}
+    E -->|No| F[Load item]
+    E -->|Yes| G[Show loader]
+    G --> H["beforeOpen(item, el, proceed)"]
+    H --> I{"proceed() or gate?"}
+    I -->|"proceed()"| F
+    I -->|"proceed({gateContent})"| J[Show gate HTML]
+    J --> K[User clicks proceed] --> F
+    F --> L["onLoading(item, viewer)"]
+    L --> M[Clear stage]
+    M --> N{onRender appends?}
+    N -->|Yes| O[Custom content]
+    N -->|No| P["CV.renderers[type]"]
+    P --> Q{Found?}
+    Q -->|Yes| R[Render content]
+    Q -->|No| S[Unsupported card]
+    O --> T[Resolve toolbar]
+    R --> T
+    S --> T
+    T --> U["onOpen(item, $stage, viewer)"]
+    U --> V["onComplete(item, viewer)"]
+          </div>
+        </div>
 
-CLOSING
-───────
-  Esc / close button / backdrop click
-        │
-        ├── onCleanup(item, viewer)
-        │
-        ├── Close animation (~300ms)
-        │
-        └── onClose(item, viewer)
-</code></pre>
+        <div id="fc-close" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    A["Esc / Close / Backdrop"] --> B["onCleanup(item, viewer)"]
+    B --> C["Destroy content"]
+    C --> D["Close animation (~300ms)"]
+    D --> E["Remove overlay DOM"]
+    E --> F{WCAG enabled?}
+    F -->|Yes| G["Restore focus"]
+    F -->|No| H["onClose(item, viewer)"]
+    G --> H
+    H --> I[Done]
+          </div>
+        </div>
+
+        <div id="fc-render" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    A[_renderContent] --> B{onRender set?}
+    B -->|Yes| C["onRender(item, $stage, viewer)"]
+    C --> D{Appended content?}
+    D -->|Yes| E[Custom rendered]
+    D -->|No| F
+    B -->|No| F["CV.renderers[type]"]
+    F --> G{Found?}
+    G -->|Yes| H["renderer(item, $stage, inst, overlay)"]
+    G -->|No| I[Unsupported card]
+    E --> J[Apply layout classes]
+    H --> J
+    I --> J
+          </div>
+        </div>
+
+        <div id="fc-toolbar" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    A[_resolveToolbar] --> B{HTML type?}
+    B -->|Yes| C["Minimal toolbar"]
+    B -->|No| D{onRender toolbar?}
+    D -->|Yes| E[Use custom toolbar]
+    D -->|No| F[Renderer toolbar]
+    F --> G{Slideshow?}
+    G -->|Yes| H[Add Play/Pause]
+    G -->|No| I[toolbarItems?]
+    H --> I
+    I -->|Yes| J[Merge items]
+    I -->|No| K
+    J --> K{Inline?}
+    K -->|Yes| L[Add Copy btn]
+    K -->|No| M{Extract text?}
+    L --> M
+    M -->|Yes| N[Add Extract btn]
+    M -->|No| O{onToolbar?}
+    N --> O
+    O -->|Yes| P["onToolbar()"]
+    O -->|No| Q{Download URL?}
+    P --> Q
+    Q -->|Yes| R[Add Download]
+    Q -->|No| S[Render buttons]
+    R --> S
+    C --> S
+    E --> S
+          </div>
+        </div>
+
+        <div id="fc-keyboard" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    A[_handleKeydown] --> B{Visible?}
+    B -->|No| Z[Ignore]
+    B -->|Yes| C{"? key"}
+    C -->|Yes| D[Shortcuts popup]
+    C -->|No| E{Escape?}
+    E -->|Yes| F[Close]
+    E -->|No| G{Arrows?}
+    G -->|Yes| H[Navigate / seek]
+    G -->|No| I{+/- keys?}
+    I -->|Yes| J[Zoom]
+    I -->|No| K{Tab+WCAG?}
+    K -->|Yes| L[Focus trap]
+    K -->|No| M{Space/M/R?}
+    M -->|Yes| N[Media control]
+    M -->|No| O{Toolbar key?}
+    O -->|Yes| P[Click button]
+    O -->|No| Z
+          </div>
+        </div>
+
+        <div id="fc-modular" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart LR
+    subgraph Req [Required]
+        U["utils.js"]
+        C["core.js"]
+    end
+    subgraph Rend [Renderers]
+        I["image"]
+        V["video"]
+        Au["audio"]
+        P["pdf"]
+        In["inline"]
+        Md["markdown"]
+        H["html"]
+    end
+    subgraph Feat [Features]
+        Ca["carousel"]
+        Sl["slideshow"]
+        Mi["minimize"]
+        Co["comments"]
+        Po["poll"]
+        Ex["extract"]
+    end
+    U --> C
+    C --> Rend
+    C --> Feat
+          </div>
+        </div>
+
+        <div id="fc-gate" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    A["Click / .open()"] --> B["Overlay + loader"]
+    B --> C["beforeOpen(item, el, proceed)"]
+    C --> D["Host async logic"]
+    D --> E{Host calls?}
+    E -->|"proceed()"| F["Load item"]
+    E -->|"proceed({gate})"| G["Show gate HTML"]
+    E -->|Never| H["Loader stays"]
+    G --> I["User clicks proceed"]
+    I --> J["onProceed() runs"]
+    J --> K["_openContext set"]
+    K --> F
+    F --> L["resolveUrl reads context"]
+    L --> M[Content displayed]
+          </div>
+        </div>
+
+        <div id="fc-zoom" class="cv-flowchart cv-fc-panel" style="display:none;">
+          <div class="mermaid">
+flowchart TD
+    subgraph Zoom [Zoom Triggers]
+        W["Wheel"]
+        S["Slider"]
+        K["+/- keys"]
+        Pi["Pinch"]
+    end
+    subgraph Pan [Pan Triggers]
+        MD["Mouse drag"]
+        TD["Touch drag"]
+    end
+    W --> SZ[_setZoom]
+    S --> SZ
+    K --> SZ
+    Pi --> SZ
+    SZ --> CP[_clampPan]
+    CP --> AT[_applyTransform]
+    MD --> EW{.cv-extract-word?}
+    TD --> EW
+    EW -->|Yes| TS["Text selection"]
+    EW -->|No| UP["Update pan"]
+    UP --> CP
+    AT --> CSS["Set CSS transform"]
+    SZ --> HR{Hi-res threshold?}
+    HR -->|Yes| Swap["Load hi-res"]
+    HR -->|No| Done[Done]
+          </div>
+        </div>
+
+        <script>
+        (function() {
+          var select = document.getElementById('cv-flowchart-select');
+          var panels = document.querySelectorAll('.cv-fc-panel');
+          if (!select) return;
+          select.addEventListener('change', function() {
+            panels.forEach(function(p) { p.style.display = 'none'; });
+            var id = select.value;
+            if (id) {
+              var panel = document.getElementById(id);
+              if (panel) {
+                panel.style.display = 'block';
+                if (typeof mermaid !== 'undefined' && !panel.getAttribute('data-rendered')) {
+                  mermaid.run({ nodes: panel.querySelectorAll('.mermaid') });
+                  panel.setAttribute('data-rendered', '1');
+                }
+              }
+            }
+          });
+        })();
+        </script>
+
 
         <h3>Execution order</h3>
         <p>When <strong>opening or loading an item</strong>, lifecycle callbacks run in this order:</p>
@@ -1963,10 +2303,11 @@ $container.componentViewer('open', 0);</code></pre>
 
       <section id="playground" class="section">
         <h2>Live playground</h2>
-        <p>Toggle options below and click <strong>Open viewer</strong> to see how they affect the overlay. Requires jQuery and the plugin scripts to be loaded on the page (they are loaded in <a href="example.html">example.html</a>).</p>
+        <p>Toggle options below and click <strong>Open viewer</strong> to try the overlay. This page loads the modular stack: <code>utils</code>, <code>core</code>, <code>renderer-image</code>, and <code>src/min/feature-*.min.js</code> for carousel, slideshow, comments, minimize, and poll (sample images included).</p>
 
         <div id="playground-panel" style="background:#f8fafc;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px 24px;margin-bottom:16px;">
+          <h4 style="margin:0 0 10px;font-size:13px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;">General</h4>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px 24px;margin-bottom:18px;">
             <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
               <input type="checkbox" id="pg-loop" checked /> <code>loop</code>
             </label>
@@ -1989,9 +2330,6 @@ $container.componentViewer('open', 0);</code></pre>
               <input type="checkbox" id="pg-wcag" /> <code>wcag</code>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
-              <input type="checkbox" id="pg-carousel" /> <code>carousel.enabled</code>
-            </label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
               <input type="checkbox" id="pg-stage-only" /> <code>stageOnly.enabled</code>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
@@ -2003,6 +2341,35 @@ $container.componentViewer('open', 0);</code></pre>
                 <option value="light">light</option>
               </select>
               <code>theme</code>
+            </label>
+          </div>
+          <h4 style="margin:0 0 8px;font-size:13px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;">Feature modules</h4>
+          <p style="font-size:13px;color:#57606a;margin:0 0 12px;line-height:1.5;">Each toggle maps to a <code>feature-*.js</code> module. Carousel and slideshow sit together for navigation; sample poll labels and comments are added when those toggles are on.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px 24px;margin-bottom:16px;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+              <input type="checkbox" id="pg-carousel" /> <code>carousel.enabled</code> <span style="font-size:12px;color:#64748b;">(feature-carousel)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+              <input type="checkbox" id="pg-slideshow" /> <code>slideshow</code> <span style="font-size:12px;color:#64748b;">(feature-slideshow)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+              <input type="checkbox" id="pg-minimize" /> <code>minimize</code> <span style="font-size:12px;color:#64748b;">(feature-minimize)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+              <input type="checkbox" id="pg-poll" /> <code>pollOption</code> <span style="font-size:12px;color:#64748b;">(feature-poll)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+              <input type="checkbox" id="pg-comments" /> <code>showAttachmentComment</code> <span style="font-size:12px;color:#64748b;">(feature-comments)</span>
+            </label>
+          </div>
+          <div id="pg-poll-mode-row" style="display:none;margin:0 0 16px;padding:12px 14px;background:#f1f5f9;border-radius:6px;border:1px solid #e2e8f0;">
+            <label style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;color:#334155;">
+              <span style="font-weight:600;">Poll mode</span>
+              <select id="pg-poll-mode" aria-label="Poll option mode" style="padding:5px 10px;border-radius:4px;border:1px solid var(--border);font-size:13px;background:#fff;">
+                <option value="radio">radio — single choice</option>
+                <option value="checkbox">checkbox — multi choice</option>
+              </select>
+              <code style="font-size:12px;color:#64748b;">pollOption.mode</code>
             </label>
           </div>
           <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -2019,28 +2386,97 @@ $container.componentViewer('open', 0);</code></pre>
           var statusEl = document.getElementById('pg-status');
           if (!openBtn) return;
 
-          function getOpts() {
-            return {
-              loop: document.getElementById('pg-loop').checked,
-              showCounter: document.getElementById('pg-counter').checked,
+          function el(id) { return document.getElementById(id); }
+
+          function syncPollModeRow() {
+            var row = el('pg-poll-mode-row');
+            if (row) row.style.display = el('pg-poll').checked ? 'block' : 'none';
+          }
+
+          function getOptsSerializable() {
+            var slideshowOn = el('pg-slideshow').checked;
+            var minimizeOn = el('pg-minimize').checked;
+            var pollOn = el('pg-poll').checked;
+            var pollMode = el('pg-poll-mode') && el('pg-poll-mode').value === 'checkbox' ? 'checkbox' : 'radio';
+            var o = {
+              loop: el('pg-loop').checked,
+              showCounter: el('pg-counter').checked,
               toolbar: {
-                download: document.getElementById('pg-download').checked,
-                zoom: document.getElementById('pg-zoom').checked
+                download: el('pg-download').checked,
+                zoom: el('pg-zoom').checked
               },
-              themeToggle: document.getElementById('pg-theme-toggle').checked,
-              fullscreen: document.getElementById('pg-fullscreen').checked,
-              wcag: document.getElementById('pg-wcag').checked,
-              carousel: { enabled: document.getElementById('pg-carousel').checked },
-              stageOnly: { enabled: document.getElementById('pg-stage-only').checked },
-              isRTL: document.getElementById('pg-rtl').checked,
-              theme: document.getElementById('pg-theme').value
+              themeToggle: el('pg-theme-toggle').checked,
+              fullscreen: el('pg-fullscreen').checked,
+              wcag: el('pg-wcag').checked,
+              carousel: { enabled: el('pg-carousel').checked },
+              stageOnly: { enabled: el('pg-stage-only').checked },
+              isRTL: el('pg-rtl').checked,
+              theme: el('pg-theme').value,
+              slideshow: slideshowOn ? { enabled: true, interval: 4, showProgress: true, autoStart: false } : { enabled: false },
+              minimize: minimizeOn ? { enabled: true } : { enabled: false },
+              showAttachmentComment: el('pg-comments').checked,
+              pollOption: pollOn ? { enabled: true, mode: pollMode } : null
             };
+            return o;
+          }
+
+          function buildItems() {
+            var pollOn = el('pg-poll').checked;
+            var pollMulti = pollOn && el('pg-poll-mode') && el('pg-poll-mode').value === 'checkbox';
+            var commentsOn = el('pg-comments').checked;
+            var demoComment = { title: 'Preview', author: 'Docs', text: 'Attachment comment area (feature-comments). Use prev/next if multiple.' };
+            function base(i, seed) {
+              var item = {
+                type: 'image',
+                title: i === 0 ? 'Sample image' : (i === 1 ? 'Second image' : 'Third image'),
+                src: 'https://picsum.photos/1200/800?random=' + seed
+              };
+              if (pollOn && i === 0) {
+                item.pollOptionLabel = 'Option A — first attachment';
+                item.pollOptionId = 'doc-playground-a';
+              }
+              if (pollOn && pollMulti && i === 1) {
+                item.pollOptionLabel = 'Option B — second attachment';
+                item.pollOptionId = 'doc-playground-b';
+              }
+              if (commentsOn) {
+                item.comments = i === 0 ? [demoComment, { title: 'Note', author: 'User', text: 'Second comment — use arrows in the comment bar.' }] : [demoComment];
+              }
+              return item;
+            }
+            return [base(0, 1), base(1, 2), base(2, 3)];
+          }
+
+          function buildOpenOpts() {
+            var o = getOptsSerializable();
+            var opts = {
+              loop: o.loop,
+              showCounter: o.showCounter,
+              toolbar: {
+                download: o.toolbar.download,
+                zoom: o.toolbar.zoom
+              },
+              themeToggle: o.themeToggle,
+              fullscreen: o.fullscreen,
+              wcag: o.wcag,
+              carousel: o.carousel,
+              stageOnly: o.stageOnly,
+              isRTL: o.isRTL,
+              theme: o.theme,
+              slideshow: o.slideshow,
+              minimize: o.minimize,
+              showAttachmentComment: o.showAttachmentComment,
+              pollOption: o.pollOption
+            };
+            opts.items = buildItems();
+            return opts;
           }
 
           function updateCode() {
-            var opts = getOpts();
-            var json = JSON.stringify(opts, null, 2);
-            if (codeEl) codeEl.textContent = '$.componentViewer(' + json + ').componentViewer(\'open\', 0);';
+            syncPollModeRow();
+            var json = JSON.stringify(getOptsSerializable(), null, 2);
+            var tail = '\n\n// items: [ { type: "image", title, src, ...optional pollOptionLabel, comments } ] — built in page script';
+            if (codeEl) codeEl.textContent = '$.componentViewer(' + json + ').componentViewer(\'open\', 0);' + tail;
           }
 
           document.getElementById('playground-panel').addEventListener('change', updateCode);
@@ -2048,16 +2484,10 @@ $container.componentViewer('open', 0);</code></pre>
 
           openBtn.addEventListener('click', function() {
             if (typeof jQuery === 'undefined' || !jQuery.fn.componentViewer) {
-              if (statusEl) statusEl.textContent = 'jQuery or ComponentViewer plugin not loaded. Open this page inside example.html or load the scripts first.';
+              if (statusEl) statusEl.textContent = 'jQuery or ComponentViewer plugin not loaded.';
               return;
             }
-            var opts = getOpts();
-            opts.items = [
-              { type: 'image', title: 'Sample image', src: 'https://picsum.photos/1200/800?random=1' },
-              { type: 'image', title: 'Second image', src: 'https://picsum.photos/1200/800?random=2' },
-              { type: 'image', title: 'Third image', src: 'https://picsum.photos/1200/800?random=3' }
-            ];
-            jQuery.componentViewer(opts).componentViewer('open', 0);
+            jQuery.componentViewer(buildOpenOpts()).componentViewer('open', 0);
             if (statusEl) statusEl.textContent = '';
           });
         })();
@@ -2383,54 +2813,7 @@ $.componentViewer({
 
       <section id="changelog" class="section">
         <h2>Changelog</h2>
-        <p>Notable additions and changes to the plugin. For the full commit history, see the project repository.</p>
-        <table>
-          <thead><tr><th>Version / Date</th><th>Change</th></tr></thead>
-          <tbody>
-                        <tr><td><strong>v3.0</strong></td><td>
-              <ul class="doc-opt-desc">
-                <li><strong>Modular architecture:</strong> 16 source modules under <code>src/</code>; include only what you need. Full bundle still available.</li>
-                <li><strong>WCAG on by default:</strong> focus trap, ARIA, keyboard labels enabled out of the box.</li>
-                <li><strong>CSS fixed:</strong> removed Less-only syntax; pure CSS deployment.</li>
-                <li><strong>Explicit instance passing:</strong> renderers receive <code>(item, $stage, inst, overlay)</code> instead of reading global state.</li>
-                <li><strong>Registration API:</strong> <code>$.fn.componentViewer._cv.registerRenderer()</code> / <code>.registerFeature()</code> for custom modules.</li>
-              </ul>
-            </td></tr>
-            <tr><td><strong>v2 Latest</strong></td><td>
-              <ul class="doc-opt-desc">
-                <li><strong>OCR overlay improvements:</strong> oversized-reference guard, font-size width cap, text selection while zoomed, fallback to loaded image dimensions.</li>
-                <li><strong>CSS customization docs:</strong> new section listing key class names, theme classes, and state classes.</li>
-                <li><strong>Migration from Colorbox:</strong> new section with option, callback, and API mapping tables.</li>
-                <li><strong>Documentation UX:</strong> sidebar scroll-spy, anchor link icons, search match highlighting, collapsible option tables, mobile hamburger nav.</li>
-              </ul>
-            </td></tr>
-            <tr><td>v2.x</td><td>
-              <ul class="doc-opt-desc">
-                <li><strong>Minimize mode</strong> (<code>minimize: { enabled: true }</code>): collapse overlay to floating restore icon.</li>
-                <li><strong>RTL mode</strong> (<code>isRTL: true</code>): mirrored nav, arrows, swipe, carousel direction.</li>
-                <li><strong>beforeCollectItems</strong>: hook before item list rebuild (sync or async).</li>
-                <li><strong>Slideshow</strong>: auto-advance with configurable interval, progress bar, media-aware advance.</li>
-                <li><strong>Keyboard shortcuts popup</strong> (<kbd>?</kbd>): context-aware list of available shortcuts.</li>
-                <li><strong>Image extract-text (OCR)</strong>: toolbar button, circle loader, word-level highlight overlay with zoom/pan sync.</li>
-                <li><strong>Video autoplay control</strong>: <code>video.autoplay</code> and <code>audio.autoplay</code> options.</li>
-                <li><strong>Video before-play gate</strong>: <code>beforeVideoPlay</code> with <code>gateContent</code> support and <code>$stage</code> parameter.</li>
-                <li><strong>PDF two-page spread</strong>: toolbar toggle for side-by-side view.</li>
-                <li><strong>Attachment comments</strong>: multi-comment overlay with prev/next and counter.</li>
-                <li><strong>Poll options</strong>: radio/checkbox row above toolbar with <code>pollOptionSelected</code> pre-check.</li>
-                <li><strong>Carousel</strong>: thumbnail strip with scroll arrows and type labels.</li>
-                <li><strong>HTML iframe type</strong>: auto-created iframe with in-stage loading panel.</li>
-                <li><strong>Markdown toggle</strong>: raw/source view for <code>.md</code> items.</li>
-              </ul>
-            </td></tr>
-            <tr><td>v1.x</td><td>
-              <ul class="doc-opt-desc">
-                <li>Initial release: image, video, audio, PDF, inline, HTML, error types.</li>
-                <li>Dark/light theme, zoom/pan, keyboard nav, swipe nav, fullscreen, WCAG.</li>
-                <li>Custom toolbar items, <code>onRender</code>, <code>onToolbar</code>, <code>resolveUrl</code>.</li>
-              </ul>
-            </td></tr>
-          </tbody>
-        </table>
+        <p>For the full list of changes, see <a href="CHANGELOG.md"><code>CHANGELOG.md</code></a> in the project repository.</p>
         <hr class="section-end" />
       </section>
 
@@ -2475,12 +2858,31 @@ $.componentViewer({
 
       <p style="margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); color: #57606a; font-size: 13px;">
         ComponentViewer — MIT License. For live demos, open <code>example.html</code> in the plugin folder.
+        Source: <a href="https://github.com/sankaran-ns-8600/component-viewer-v3" target="_blank" rel="noopener noreferrer">Component Viewer on GitHub</a>.
       </p>
       <p style="margin-top: 12px; color: #57606a; font-size: 13px;">
-        ComponentViewer v3 — modular architecture. Plugin and design by <a href="https://www.linkedin.com/in/sankaran-natarajan-238b0214a/" target="_blank" rel="noopener noreferrer">Sankaran N</a>.
+        ComponentViewer — modular architecture. Plugin and design by <a href="https://www.linkedin.com/in/sankaran-natarajan-238b0214a/" target="_blank" rel="noopener noreferrer">Sankaran N</a>.
       </p>
     </main>
   </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Modular: utils + core + renderer-image + all feature modules (live playground) -->
+  <script src="src/min/utils.min.js"></script>
+  <script src="src/min/core.min.js"></script>
+  <script src="src/min/renderer-image.min.js"></script>
+  <script src="src/min/feature-carousel.min.js"></script>
+  <script src="src/min/feature-comments.min.js"></script>
+  <script src="src/min/feature-minimize.min.js"></script>
+  <script src="src/min/feature-poll.min.js"></script>
+  <script src="src/min/feature-slideshow.min.js"></script>
+  <script>
+    (function() {
+      if (typeof jQuery === 'undefined' || !jQuery.fn.componentViewer) return;
+      jQuery('#doc-feature-previews').componentViewer({
+        toolbar: { download: true, zoom: true }
+      });
+    })();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
@@ -2799,5 +3201,18 @@ $.componentViewer({
       });
     })();
   </script>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('doc-export-pdf');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        window.print();
+      });
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: false, theme: 'default', flowchart: { useMaxWidth: true, htmlLabels: true } });</script>
 </body>
 </html>
